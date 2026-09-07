@@ -3049,6 +3049,12 @@
               <option value="">Todos</option>
             </select>
           </div>
+          <div style="margin-bottom:8px;" id="frequencyFilterWrapper">
+            <div class="filter-group-label" style="font-size:10px;margin-bottom:4px;">Frecuencia de consumo</div>
+            <select class="filter-select" id="fFrequency" style="width:100%;border-radius:var(--r-sm);">
+              <option value="">Todas</option>
+            </select>
+          </div>
           <div style="margin-bottom:8px;" id="locationFilterWrapper">
             <div class="filter-group-label" style="font-size:10px;margin-bottom:4px;">Ciudad</div>
             <select class="filter-select" id="fLocation" style="width:100%;border-radius:var(--r-sm);">
@@ -3452,10 +3458,12 @@
     // Esta campaña todavía no tiene benchmark histórico publicado. Con los benchmarks a
     // `null` las píldoras comparativas no se pintan; en cuanto haya referencia basta con
     // poner aquí el número (media 0-10 en sabor/NPS, porcentaje en intención) y reaparecen.
-    const BENCH_NPS_AVG = null;       // TODO(Joel): media de recomendación de referencia
-    const BENCH_NPS_LABEL = 'benchmark';
-    const BENCH_INTENCION = null;     // TODO(Joel): % compradores potenciales de referencia
-    const BENCH_SABOR = null;         // TODO(Joel): media de valoración de sabor de referencia
+    const BENCH_NPS_AVG = 7.2;        // Media de recomendación de snacks de ensalada
+    const BENCH_NPS_LABEL = 'snacks de ensalada';
+    const BENCH_INTENCION = 44;       // % compradores potenciales de snacks de ensalada
+    const BENCH_INTENCION_LABEL = 'snacks de ensalada';
+    const BENCH_SABOR = 7.6;          // Media de valoración de sabor de snacks de ensalada
+    const BENCH_SABOR_LABEL = 'snacks de ensalada';
 
     // ── COLUMNAS CLAVE DE LA CAMPAÑA (Platanitos Lima Limón Amazonia) ──
     // Los identificadores son los `question_id` de la encuesta y coinciden con las cabeceras
@@ -3536,7 +3544,7 @@
         col: COL_SABOR, title: 'Valoración del sabor',
         sub: 'Ahora que has probado los Platanitos Lima Limón Amazonia, ¿qué te ha parecido su sabor?',
         type: 'score', section: 'valoracion', blueGradient: true, sortByScore: true,
-        benchmark: BENCH_SABOR, benchmarkLabel: BENCH_NPS_LABEL
+        benchmark: BENCH_SABOR, benchmarkLabel: BENCH_SABOR_LABEL
       },
       {
         // Escala divergente: el tono más oscuro cae en el punto óptimo y se aclara hacia los
@@ -3817,12 +3825,12 @@
       const cls = diff > 0 ? 'up' : 'down'; const arrow = diff > 0 ? '↑' : '↓';
       return `<span class="bench-tag ${cls}">${arrow} ${fmtBench(Math.abs(diff))} vs ${fmtBench(bench)}${suffix}</span>`;
     }
-    function benchTagPct(valPct, benchPct) {
+    function benchTagPct(valPct, benchPct, label = BENCH_NPS_LABEL) {
       if (benchPct === null || benchPct === undefined) return '';
       const diff = valPct - benchPct;
-      if (Math.abs(diff) < 0.5) return `<span class="bench-tag neutral">= ${benchPct}% benchmark ${BENCH_NPS_LABEL}</span>`;
+      if (Math.abs(diff) < 0.5) return `<span class="bench-tag neutral">= ${benchPct}% benchmark ${label}</span>`;
       const cls = diff > 0 ? 'up' : 'down'; const arrow = diff > 0 ? '↑' : '↓';
-      return `<span class="bench-tag ${cls}">${arrow} ${Math.abs(Math.round(diff))} pts vs ${benchPct}% ${BENCH_NPS_LABEL}</span>`;
+      return `<span class="bench-tag ${cls}">${arrow} ${Math.abs(Math.round(diff))} pts vs ${benchPct}% ${label}</span>`;
     }
 
     // ── CHART COLOR HELPER ──
@@ -5802,17 +5810,16 @@
         texCard.style.display = 'none';
       }
 
-      // ─ Comprarían: % de compradores potenciales en COL_INTENCION ─
+      // ─ Comprarían: suma de "Seguramente" + "Probablemente" ─
       const iArr = getColData(rows, getIdx(COL_INTENCION));
-      const compradores = iArr.filter(isBuyerAnswer).length;
-      const iPct = iArr.length ? pct(compradores, iArr.length) : 0;
+      const iPct = iArr.length ? intentSummaryValues(iArr).compradores : 0;
       document.getElementById('kpiIntencion').textContent = iArr.length ? iPct + '%' : '—';
-      document.getElementById('kpiIntencionBench').innerHTML = iArr.length ? benchTagPct(iPct, BENCH_INTENCION) : '';
+      document.getElementById('kpiIntencionBench').innerHTML = iArr.length ? benchTagPct(iPct, BENCH_INTENCION, BENCH_INTENCION_LABEL) : '';
 
       // ─ Valoración de sabor: media en COL_SABOR ─
       const sab = avgScoreOf(rows, COL_SABOR);
       document.getElementById('kpiSabor').textContent = sab ? fmt1(sab.avg) : '—';
-      document.getElementById('kpiSaborBench').innerHTML = sab ? benchTag(sab.avg, BENCH_SABOR, BENCH_NPS_LABEL) : '';
+      document.getElementById('kpiSaborBench').innerHTML = sab ? benchTag(sab.avg, BENCH_SABOR, BENCH_SABOR_LABEL) : '';
       document.getElementById('kpiSaborRelated').innerHTML = '';
 
       // ─ NPS: la tarjeta muestra la MEDIA de la escala 0-10 (mismo criterio que la tarjeta
@@ -6049,6 +6056,32 @@
       sel.parentElement.style.display = opts.length ? '' : 'none';
     }
 
+    function populateFrequencyFilter() {
+      const sel = document.getElementById('fFrequency');
+      const idx = COL[COL_FREQ_SNACK] !== undefined ? COL[COL_FREQ_SNACK] : -1;
+      if (!sel) return;
+      const prev = sel.value;
+      const counts = {};
+      if (idx >= 0) getColData(allRows, idx).forEach(v => {
+        const value = (v || '').toString().trim();
+        if (value) counts[value] = (counts[value] || 0) + 1;
+      });
+      const responseOrder = [
+        'Varias veces a la semana',
+        'Una vez por semana',
+        'Varias veces al mes',
+        'Ocasionalmente',
+        'Nunca los consumo'
+      ];
+      const opts = responseOrder.filter(value => counts[value]).concat(
+        Object.keys(counts).filter(value => responseOrder.indexOf(value) === -1).sort((a, b) => counts[b] - counts[a])
+      );
+      sel.innerHTML = '<option value="">Todas</option>';
+      opts.forEach(o => { const op = document.createElement('option'); op.value = o; op.textContent = o; sel.appendChild(op); });
+      if (prev && opts.indexOf(prev) !== -1) sel.value = prev;
+      sel.parentElement.style.display = opts.length ? '' : 'none';
+    }
+
     function populateLocationFilter() {
       const sel = document.getElementById('fLocation');
       const idx = COL['_location'] !== undefined ? COL['_location'] : -1;
@@ -6071,6 +6104,8 @@
       const g = document.getElementById('fGender').value;
       const a = document.getElementById('fAge').value;
       const f = document.getElementById('fFavorite') ? document.getElementById('fFavorite').value : '';
+      const frEl = document.getElementById('fFrequency');
+      const fr = frEl ? frEl.value : '';
       const uEl = document.getElementById('fUser');
       const u = uEl ? uEl.value : '';
       const lEl = document.getElementById('fLocation');
@@ -6078,6 +6113,7 @@
       const gIdx = COL['_gender'] !== undefined ? COL['_gender'] : -1;
       const aIdx = COL['_age'] !== undefined ? COL['_age'] : -1;
       const fIdx = COL['_favorite'] !== undefined ? COL['_favorite'] : (COL[COL_FAVORITO] !== undefined ? COL[COL_FAVORITO] : -1);
+      const frIdx = COL[COL_FREQ_SNACK] !== undefined ? COL[COL_FREQ_SNACK] : -1;
       const uIdx = COL['_user'] !== undefined ? COL['_user'] : -1;
       const lIdx = COL['_location'] !== undefined ? COL['_location'] : -1;
       const uNorm = norm(u);
@@ -6085,6 +6121,7 @@
         if (g && gIdx >= 0) { const v = norm((r[gIdx] || '').toString()); const isF = v.startsWith('f') || v === 'mujer' || v === 'femenino'; const isM = v.startsWith('m') || v === 'hombre' || v === 'masculino'; if (g === 'F' && !isF) return false; if (g === 'M' && !isM) return false; }
         if (a && aIdx >= 0) { const ag = ageGroup((r[aIdx] || '').toString()); if (!ag || ag !== a) return false; }
         if (f && fIdx >= 0) { if ((r[fIdx] || '').toString().trim() !== f) return false; }
+        if (fr && frIdx >= 0) { if ((r[frIdx] || '').toString().trim() !== fr) return false; }
         if (u && uIdx >= 0) { if (norm((r[uIdx] || '').toString()) !== uNorm) return false; }
         if (l && lIdx >= 0) { if ((r[lIdx] || '').toString().trim() !== l) return false; }
         return true;
@@ -6381,6 +6418,7 @@
         allRows = merged;
         populateUserFilter();
         populateFavoriteFilter();
+        populateFrequencyFilter();
         populateLocationFilter();
         buildDynamicCharts();
         render(getFiltered());
@@ -6408,7 +6446,7 @@
     }
 
     // ── EVENTS ──
-    ['fGender', 'fAge', 'fFavorite', 'fLocation'].forEach(id => {
+    ['fGender', 'fAge', 'fFavorite', 'fFrequency', 'fLocation'].forEach(id => {
       const el = document.getElementById(id);
       if (el) el.addEventListener('change', () => render(getFiltered()));
     });
