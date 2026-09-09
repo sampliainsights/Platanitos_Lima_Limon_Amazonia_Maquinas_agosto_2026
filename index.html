@@ -5,9 +5,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Platanitos Lima Limón Amazonia · Samplia Insights</title>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;0,900;1,400&display=swap"
-    rel="stylesheet" />
+  <meta name="color-scheme" content="light" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+  <!-- Una sola familia variable (un archivo woff2) en lugar de las seis
+       estáticas de Roboto que había: menos peticiones y menos bytes. -->
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400..800&display=swap" rel="stylesheet" />
   <style>
     *,
     *::before,
@@ -24,67 +28,111 @@
       inherits: false
     }
 
+    /* ═══════════════════════════════════════════════════════════════
+       SISTEMA VISUAL · Samplia Insights
+       Mismo sistema que el informe de comunidad, para que los dos
+       dashboards se lean como una familia. Tres reglas lo gobiernan:
+
+       1. Un solo acento. El rojo Samplia sólo aparece donde hay que
+          mirar: sección activa, el KPI que abre, la aportación directa
+          del sampling y los estados de error. El resto vive en la rampa
+          azul de marca o en gris. Un acento repetido veinte veces deja
+          de ser un acento.
+       2. Filete, no sombra. Las tarjetas se separan con 1px y con aire.
+          Las sombras quedan para lo que flota de verdad (modal, visor).
+       3. La jerarquía la marca el tamaño y el peso, no el color.
+       ═══════════════════════════════════════════════════════════════ */
     :root {
       /* === Paleta canónica lksjdfls.pdf ===
          #375395 Dusk Blue · #0F1729 Prussian Blue · #FBDBDF Soft Blush
          #E9455B Watermelon · #E0253F Raspberry · #B51A03 Brick Ember */
       --primary-100: #E0253F;
-      /* Vibrant red (palette) - primary */
       --primary-200: #E9455B;
-      /* Coral red (palette) */
       --primary-300: #FBDBDF;
-      /* Light pink (palette) */
       --accent-100: #0F1729;
-      /* Deep navy (palette) */
       --accent-200: #375395;
-      /* Blue accent (palette) */
       --danger-100: #B51A03;
-      /* Dark red (palette) */
+
+      /* Rampa azul derivada de --accent-200, de oscuro a claro. La usan
+         las barras y los degradados de escala. */
+      --blue-900: #23355F;
+      --blue-800: #293E6F;
+      --blue-700: #314A85;
+      --blue-500: #375395;
+      --blue-400: #5B72A8;
+      --blue-300: #8798BF;
+      --blue-200: #B3BED7;
+      --blue-100: #D3D9E8;
+
+      /* Neutrales ligeramente fríos, para que casen con el navy. */
+      --n-0: #FFFFFF;
+      --n-50: #FBFBFC;
+      --n-100: #F4F5F7;
+      --n-200: #E9EAEE;
+      --n-300: #D7DAE1;
+      --n-500: #9BA1AE;
+      --n-600: #6C7280;
+      --n-700: #545B69;
+
       --text-100: #0F1729;
-      --text-200: #0F1729;
-      --bg-100: #ffffff;
-      --bg-200: #f2f2f2;
-      --bg-300: #e9e9e9;
-      /* Aliases for the existing layout system */
+      --text-200: #545B69;
+      --bg-100: #FFFFFF;
+      --bg-200: #F7F8FA;
+      --bg-300: #F4F5F7;
+
+      /* Alias que usa el resto de la hoja */
       --brand: var(--primary-100);
       --brand-dark: #B51A03;
       --brand-light: #FBDBDF;
-      --brand-muted: rgba(224, 37, 63, .09);
-      --brand-muted2: rgba(224, 37, 63, .18);
+      --brand-muted: rgba(224, 37, 63, .07);
+      --brand-muted2: rgba(224, 37, 63, .16);
       --bg: var(--bg-200);
       --bg-card: var(--bg-100);
       --bg-sidebar: var(--bg-100);
-      --bg-hover: #e7e7e7;
-      --bg-input: var(--bg-200);
-      --border: rgba(35, 33, 33, .10);
-      --border-md: rgba(35, 33, 33, .20);
+      --bg-hover: var(--n-100);
+      --bg-input: var(--n-100);
+      --border: #E9EAEE;
+      --border-md: #D7DAE1;
       --txt-1: var(--text-100);
       --txt-2: var(--text-200);
-      --txt-3: #bebebe;
+      /* Era #bebebe: sobre blanco daba 1,9:1 de contraste y los
+         microrrótulos (sección, etiqueta de tarjeta, KPI) quedaban
+         ilegibles. #6C7280 da 4,8:1 y pasa AA en texto pequeño. */
+      --txt-3: #6C7280;
+      --txt-4: #9BA1AE;
       --txt-inv: #FFFFFF;
-      --green: #024f36;
-      --green-bg: rgba(2, 79, 54, .10);
+
+      --green: #0E7A55;
+      --green-bg: rgba(14, 122, 85, .09);
       --amber: #375395;
-      --amber-bg: rgba(55, 83, 149, .10);
+      --amber-bg: rgba(55, 83, 149, .09);
       --blue: #375395;
-      --blue-bg: rgba(55, 83, 149, .10);
+      --blue-bg: rgba(55, 83, 149, .09);
       --red: #B51A03;
-      --red-bg: rgba(181, 26, 3, .10);
-      --sh-xs: 0 1px 2px rgba(0, 0, 0, .05);
-      --sh-sm: 0 1px 3px rgba(0, 0, 0, .07), 0 1px 2px rgba(0, 0, 0, .04);
-      --sh-md: 0 4px 12px rgba(0, 0, 0, .08), 0 2px 4px rgba(0, 0, 0, .04);
-      --sh-lg: 0 10px 32px rgba(0, 0, 0, .10), 0 4px 8px rgba(0, 0, 0, .04);
-      --r-xs: 5px;
+      --red-bg: rgba(181, 26, 3, .09);
+
+      /* Filete, no sombra: las tres primeras se anulan a propósito y las
+         reglas que las usaban se apoyan ahora en el borde de 1px.
+         --sh-lg se queda para lo que de verdad flota. */
+      --sh-xs: none;
+      --sh-sm: none;
+      --sh-md: none;
+      --sh-lg: 0 18px 48px -12px rgba(15, 23, 41, .22), 0 4px 10px rgba(15, 23, 41, .06);
+      --sh-pop: 0 12px 32px -8px rgba(15, 23, 41, .18), 0 2px 6px rgba(15, 23, 41, .06);
+
+      --r-xs: 6px;
       --r-sm: 8px;
       --r-md: 12px;
       --r-lg: 16px;
-      --r-xl: 20px;
+      --r-xl: 18px;
       --r-full: 999px;
-      --sidebar-w: 320px;
-      --nav-h: 56px;
-      --content-gap: 16px;
-      --tr: 0.18s ease;
-      --content-max: 1280px;
+      --sidebar-w: 300px;
+      --nav-h: 60px;
+      --content-gap: 18px;
+      /* Curva de salida: arranca rápido y frena. Todo lo animado la usa. */
+      --ease: cubic-bezier(.22, .61, .36, 1);
+      --tr: .18s var(--ease);
+      --content-max: 1320px;
     }
 
     html {
@@ -93,7 +141,7 @@
     }
 
     body {
-      font-family: 'Roboto', sans-serif;
+      font-family: 'Manrope', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
       background: var(--bg);
       color: var(--txt-1);
       min-height: 100vh;
@@ -124,7 +172,7 @@
     .sidebar {
       width: var(--sidebar-w);
       flex-shrink: 0;
-      background: var(--bg-sidebar);
+      background: var(--n-0);
       border-right: 1px solid var(--border);
       position: sticky;
       top: 0;
@@ -135,7 +183,7 @@
       z-index: 200;
       transition: background var(--tr), border-color var(--tr), transform .25s ease;
       overflow-y: auto;
-      overflow-x: hidden
+      overflow-x: hidden;
     }
 
     .sidebar-logo-area {
@@ -535,7 +583,7 @@
       gap: 6px;
       background: var(--txt-1);
       color: var(--txt-inv);
-      font-family: 'Roboto', sans-serif;
+      font-family: 'Manrope', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
       font-size: 11.5px;
       font-weight: 600;
       padding: 7px 14px;
@@ -569,7 +617,7 @@
       align-items: center;
       gap: 6px;
       color: #fff;
-      font-family: 'Roboto', sans-serif;
+      font-family: 'Manrope', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
       font-size: 11.5px;
       font-weight: 600;
       padding: 7.5px 15px;
@@ -729,7 +777,7 @@
 
     /* FILTER SELECT */
     .filter-select {
-      font-family: 'Roboto', sans-serif;
+      font-family: 'Manrope', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
       font-size: 11.5px;
       font-weight: 500;
       color: var(--txt-1);
@@ -795,27 +843,10 @@
       flex-wrap: wrap
     }
 
-    /* Sólo de 769px arriba, que es donde las tarjetas van emparejadas en dos columnas. En móvil
-       se deja el comportamiento original: la píldora baja de línea y sigue a la vista. */
     @media(min-width:769px) {
-
-      /* El bloque de la pregunta cede ancho (min-width:0) para que el texto largo parta en
-         varias líneas y la píldora se quede arriba a la derecha. Sin esto, dos tarjetas iguales
-         en una misma fila quedaban distintas: la de pregunta corta con la píldora en línea y la
-         de pregunta larga con la píldora bajada. */
-      /* flex-basis 0: la base no puede ser el ancho del texto o la línea "desborda" y la
-         píldora vuelve a bajar; con base 0 el titular parte en dos líneas y la píldora aguanta. */
       .card-header-score>div:first-child {
         flex: 1 1 0;
         min-width: 0
-      }
-
-      /* Reserva la altura de dos líneas de pregunta en las tarjetas emparejadas, así los dos
-         gráficos de la fila arrancan a la misma altura aunque un titular ocupe una línea y el
-         otro dos. */
-      .pair-row .card-header-score {
-        align-items: flex-start;
-        min-height: 52px
       }
     }
 
@@ -1841,7 +1872,7 @@
       z-index: 999;
       background: #0F1729;
       color: #fff;
-      font-family: 'Roboto', sans-serif;
+      font-family: 'Manrope', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
       font-size: 12px;
       font-weight: 500;
       padding: 12px 18px;
@@ -2024,6 +2055,19 @@
       gap: 12px
     }
 
+    .pair-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--content-gap);
+      align-items: stretch
+    }
+
+    @media(max-width:900px) {
+      .pair-grid {
+        grid-template-columns: 1fr
+      }
+    }
+
     @media(max-width:900px) {
       .mini-grid {
         grid-template-columns: 1fr 1fr !important
@@ -2033,46 +2077,6 @@
     @media(max-width:560px) {
       .mini-grid {
         grid-template-columns: 1fr !important
-      }
-    }
-
-    .pair-row {
-      display: grid;
-      /* Reparto por defecto al 50%. Una pregunta con pairStart puede pedir otro reparto
-         fijando --pair-cols; se hace con variable y no con style inline para que la regla
-         móvil de más abajo (una sola columna) siga ganando. */
-      grid-template-columns: var(--pair-cols, 1fr 1fr);
-      gap: var(--content-gap);
-      align-items: stretch
-    }
-
-    /* paired cards equalize height and let their charts fill the card */
-    .pair-row>* {
-      display: flex;
-      flex-direction: column;
-      min-width: 0
-    }
-
-    .pair-row .card {
-      flex: 1 1 auto;
-      display: flex;
-      flex-direction: column
-    }
-
-    .pair-row .card-inner {
-      flex: 1 1 auto;
-      display: flex;
-      flex-direction: column
-    }
-
-    .pair-row .chart-wrap {
-      flex: 1 1 auto;
-      min-height: 180px
-    }
-
-    @media(max-width:768px) {
-      .pair-row {
-        grid-template-columns: 1fr
       }
     }
 
@@ -2971,6 +2975,1075 @@
       border-color: var(--brand);
       background: var(--brand-muted);
     }
+
+    /* ═══════════════════════════════════════════════════════════════════
+       CAPA DE SISTEMA
+       Va al final de la hoja a propósito: la base de arriba se queda como
+       está y aquí se redefine sólo lo que lleva el peso del diseño. Así el
+       cambio se lee de una vez, en un sitio, en lugar de repartido por
+       trescientas reglas — y se puede revertir borrando este bloque.
+       ═══════════════════════════════════════════════════════════════════ */
+
+    html {
+      font-size: 15px;
+      /* Sin `scroll-padding-top`: cada sección ya lleva su propio
+         `scroll-margin-top`, y los dos se suman. Con ambos, un salto desde el
+         menú dejaba el título 160 px por debajo de la cabecera y el menú
+         marcaba la sección anterior. */
+    }
+
+    body {
+      letter-spacing: -.005em;
+      font-variant-numeric: tabular-nums;
+      font-feature-settings: 'tnum' 1;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    ::selection {
+      background: var(--primary-300);
+      color: var(--accent-100);
+    }
+
+    :focus-visible {
+      outline: 2px solid var(--primary-100);
+      outline-offset: 2px;
+      border-radius: 4px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+
+      html {
+        scroll-behavior: auto;
+      }
+
+      *,
+      *::before,
+      *::after {
+        animation-duration: .001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .001ms !important;
+      }
+    }
+
+    /* Rejilla técnica muy tenue sobre el lienzo: el guiño al referente sin
+       coste de pintado (un gradiente, no un elemento). */
+    .main-area {
+      position: relative;
+    }
+
+    .main-area::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(to right, rgba(15, 23, 41, .026) 1px, transparent 1px) 0 0 / 88px 88px,
+        linear-gradient(to bottom, rgba(15, 23, 41, .026) 1px, transparent 1px) 0 0 / 88px 88px;
+      -webkit-mask-image: linear-gradient(to bottom, #000 0, transparent 760px);
+      mask-image: linear-gradient(to bottom, #000 0, transparent 760px);
+    }
+
+    .topbar,
+    .page-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ─── Microrrótulo ────────────────────────────────────────────────
+       Versalitas, tracking abierto, peso alto. Es la voz secundaria de
+       todo el informe: secciones, etiquetas de tarjeta, KPI, filtros. */
+    .section-title,
+    .card-label,
+    .kpi-label,
+    .sidebar-nav-section,
+    .sidebar-campaign-label,
+    .filter-group-label,
+    .mini-label,
+    .bl-kpi-label,
+    .data-modal-label,
+    .score-meta-lbl {
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      line-height: 1.3;
+      color: var(--txt-3);
+    }
+
+    /* ═══ BARRA LATERAL ═══════════════════════════════════════════════ */
+    .sidebar {
+      background: var(--n-0);
+      border-right: 1px solid var(--border);
+      padding-bottom: 8px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--n-300) transparent;
+    }
+
+    .sidebar-logo-area {
+      padding: 22px 22px 18px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 4px;
+    }
+
+    /* Ficha de campaña: sin sombra y sin caja de color. Un filete a la
+       izquierda basta para decir «esto es el contexto», y así no compite
+       con las tarjetas del informe. */
+    .sidebar-campaign {
+      margin: 14px 22px 4px;
+      border: 0;
+      border-left: 2px solid var(--border-md);
+      border-radius: 0;
+      padding: 2px 0 2px 16px;
+      box-shadow: none;
+    }
+
+    .sidebar-campaign-label {
+      color: var(--primary-100);
+      margin-bottom: 7px;
+    }
+
+    .sidebar-campaign-title {
+      font-size: 14.5px;
+      font-weight: 800;
+      letter-spacing: -.022em;
+      line-height: 1.25;
+      color: var(--txt-1);
+    }
+
+    .sidebar-campaign-sub {
+      font-size: 12px;
+      line-height: 1.5;
+      color: var(--txt-2);
+      margin-top: 5px;
+    }
+
+    .sidebar-campaign-meta {
+      margin-top: 12px;
+      padding-top: 11px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .sc-meta-row {
+      font-size: 11.5px;
+      line-height: 1.45;
+      color: var(--txt-2);
+      gap: 8px;
+    }
+
+    .sc-meta-row svg {
+      color: var(--txt-3);
+      margin-top: 3px;
+    }
+
+    .sidebar-nav {
+      padding: 6px 14px 14px;
+    }
+
+    .sidebar-nav-section {
+      padding: 0 8px;
+      margin: 20px 0 7px;
+      color: var(--txt-3);
+    }
+
+    .nav-item {
+      font-size: 12.5px;
+      font-weight: 600;
+      letter-spacing: -.01em;
+      color: var(--txt-2);
+      padding: 9px 11px;
+      margin-bottom: 1px;
+      transition: background-color var(--tr), color var(--tr);
+    }
+
+    .nav-item:hover {
+      background: var(--bg-hover);
+      color: var(--txt-1);
+    }
+
+    /* Activo: filete de acento y fondo neutro. El rojo se reserva a un
+       solo trazo en lugar de teñir la píldora entera. */
+    .nav-item.active {
+      background: var(--brand-muted);
+      color: var(--brand);
+      font-weight: 700;
+    }
+
+    .nav-item.active::before {
+      left: -6px;
+      width: 3px;
+      height: 18px;
+      border-radius: 0 3px 3px 0;
+      background: var(--primary-100);
+    }
+
+    .nav-item svg {
+      color: var(--txt-3);
+      opacity: 1;
+    }
+
+    .nav-item.active svg {
+      color: var(--primary-100);
+    }
+
+    .sidebar-bottom {
+      border-top: 1px solid var(--border);
+      padding: 12px 14px;
+    }
+
+    .sidebar-questions>summary {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: -.01em;
+      color: var(--txt-2);
+      border-radius: var(--r-sm);
+    }
+
+    .sidebar-questions>summary:hover {
+      background: var(--n-100);
+      color: var(--txt-1);
+    }
+
+    .sq-item {
+      font-size: 11.5px;
+      line-height: 1.5;
+      color: var(--txt-3);
+    }
+
+    .sq-num {
+      color: var(--txt-4);
+      font-weight: 700;
+    }
+
+    .filter-count,
+    .sidebar-stats .ss-lbl {
+      color: var(--txt-4);
+      font-size: 11px;
+    }
+
+    /* ═══ CABECERA ════════════════════════════════════════════════════
+       Se quita el cristal esmerilado: entre el desenfoque, la saturación
+       y el brillo forzado, la cabecera cambiaba de color según lo que
+       pasara por debajo y las píldoras perdían contraste al desplazar.
+       Un fondo sólido con un filete abajo es más tranquilo y más barato:
+       `backdrop-filter` obliga al navegador a recomponer esa franja en
+       cada fotograma del desplazamiento. */
+    .topbar {
+      height: var(--nav-h);
+      background: rgba(255, 255, 255, .92);
+      -webkit-backdrop-filter: saturate(180%) blur(8px);
+      backdrop-filter: saturate(180%) blur(8px);
+      border-bottom: 1px solid var(--border);
+      box-shadow: none;
+      padding: 0 26px;
+    }
+
+    .topbar-breadcrumb {
+      font-size: 12px;
+      color: var(--txt-3);
+      letter-spacing: -.005em;
+    }
+
+    .topbar-breadcrumb strong {
+      font-weight: 800;
+      color: var(--txt-1);
+      letter-spacing: -.018em;
+    }
+
+    .live-badge {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      color: var(--txt-3);
+      background: var(--n-100);
+      border: 1px solid var(--border);
+      padding: 4px 10px 4px 9px;
+    }
+
+    .live-dot {
+      background: #3FBF7F;
+    }
+
+    .last-update {
+      font-size: 11px;
+      color: var(--txt-4);
+    }
+
+    /* Botonera: un único botón lleva relleno —el que de verdad quieres que
+       se pulse— y el resto son de contorno. Antes competían tres rellenos
+       (tinta, rojo y azul) en 400 px de cabecera. */
+    .btn-pdf,
+    .btn-datasource {
+      background: var(--n-0);
+      color: var(--txt-2);
+      border: 1px solid var(--border-md);
+      box-shadow: none;
+      font-size: 11.5px;
+      font-weight: 700;
+      letter-spacing: -.005em;
+      padding: 7px 14px;
+      transition: border-color var(--tr), color var(--tr);
+    }
+
+    .btn-pdf:hover,
+    .btn-datasource:hover {
+      background: var(--n-0);
+      border-color: var(--txt-1);
+      color: var(--txt-1);
+      transform: none;
+      box-shadow: none;
+    }
+
+    .btn-pdf:disabled {
+      opacity: .55;
+      cursor: wait;
+    }
+
+    .btn-eval {
+      background: var(--primary-100);
+      box-shadow: none;
+      font-size: 11.5px;
+      font-weight: 700;
+      padding: 8px 15px;
+      transition: background-color var(--tr);
+    }
+
+    .btn-eval:hover {
+      background: #C81E36;
+      transform: none;
+      box-shadow: none;
+    }
+
+    /* ═══ LIENZO Y SECCIONES ══════════════════════════════════════════ */
+    .page-content {
+      padding: 26px 26px 88px;
+    }
+
+    .section-header {
+      margin: 44px 0 16px;
+      gap: 12px;
+      align-items: baseline;
+    }
+
+    .section-header:first-child {
+      margin-top: 26px;
+    }
+
+    /* El filete de acento se retira: con el rótulo en versalitas y la línea
+       a la derecha, la sección ya se lee sin una pieza más. */
+    .section-accent {
+      display: none;
+    }
+
+    /* Neutro, no rojo. Hay nueve secciones: pintarlas todas de acento lo
+       convertía en papel pintado y le quitaba fuerza justo donde el rojo
+       sí dice algo (el KPI de apertura, la barra de quien descubre el
+       snack en la activación, la sección activa del menú). */
+    .section-title {
+      color: var(--txt-3);
+    }
+
+    .section-line {
+      background: var(--border-md);
+      align-self: center;
+    }
+
+    /* ═══ TIRA DE KPI ═════════════════════════════════════════════════
+       Sin cajas ni iconos: seis cifras separadas por filetes y mucho aire.
+       Los iconos decorativos de la esquina no añadían información y sí
+       ruido a seis tarjetas seguidas. */
+    .kpi-grid {
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 0;
+      margin: 0 0 30px;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      background: transparent;
+    }
+
+    .kpi-card {
+      background: transparent;
+      border: 0;
+      border-right: 1px solid var(--border);
+      border-radius: 0;
+      padding: 22px 20px 20px 0;
+    }
+
+    .kpi-card:last-child {
+      border-right: 0;
+    }
+
+    .kpi-card:not(:first-child) {
+      padding-left: 20px;
+    }
+
+    .kpi-card:hover {
+      border-color: var(--border);
+    }
+
+    .kpi-icon {
+      display: none;
+    }
+
+    .kpi-label {
+      margin-bottom: 11px;
+      padding-right: 0;
+      color: var(--txt-4);
+    }
+
+    .kpi-value {
+      font-size: clamp(26px, 2.6vw, 36px);
+      font-weight: 800;
+      letter-spacing: -.045em;
+      color: var(--txt-1);
+    }
+
+    /* El primero es el que abre el informe: única cifra en acento. */
+    .kpi-card:first-child .kpi-value {
+      color: var(--primary-100);
+    }
+
+    .kpi-sub {
+      font-size: 11px;
+      line-height: 1.45;
+      color: var(--txt-4);
+      margin-top: 8px;
+    }
+
+    .bench-tag {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0;
+      padding: 3px 9px;
+      margin-top: 8px;
+      border: 1px solid transparent;
+    }
+
+    .bench-tag.up {
+      color: #0E7A55;
+      background: var(--green-bg);
+      border-color: rgba(14, 122, 85, .18);
+    }
+
+    .bench-tag.down {
+      color: var(--danger-100);
+      background: var(--red-bg);
+      border-color: rgba(181, 26, 3, .18);
+    }
+
+    .bench-tag.neutral {
+      color: var(--txt-3);
+      background: var(--n-100);
+      border-color: var(--border);
+    }
+
+    @media (max-width: 1200px) {
+      .kpi-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .kpi-card:nth-child(3n) {
+        border-right: 0;
+      }
+
+      .kpi-card:nth-child(3n+1) {
+        padding-left: 0;
+      }
+
+      .kpi-card:nth-child(n+4) {
+        border-top: 1px solid var(--border);
+      }
+    }
+
+    @media (max-width: 640px) {
+      .kpi-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .kpi-card:nth-child(2n) {
+        border-right: 0;
+      }
+
+      .kpi-card:nth-child(2n+1) {
+        padding-left: 0;
+        border-right: 1px solid var(--border);
+      }
+
+      .kpi-card:nth-child(n+3) {
+        border-top: 1px solid var(--border);
+      }
+    }
+
+    /* ═══ TARJETA ═════════════════════════════════════════════════════
+       Fondo plano y filete de 1px. El degradado que traía (blanco a gris)
+       hacía que dos tarjetas contiguas de distinta altura no casaran, y
+       la sombra sobraba en cuanto hay borde. */
+    .card,
+    .insight-card,
+    .data-table-card {
+      background: var(--n-0);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      box-shadow: none;
+      transition: border-color var(--tr);
+    }
+
+    .card:hover,
+    .insight-card:hover,
+    .data-table-card:hover {
+      border-color: var(--border-md);
+      box-shadow: none;
+      transform: none;
+    }
+
+    .card-inner {
+      padding: 22px;
+    }
+
+    .card-label {
+      margin-bottom: 7px;
+      color: var(--txt-4);
+    }
+
+    .card-question {
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: -.018em;
+      line-height: 1.35;
+      color: var(--txt-1);
+      text-wrap: pretty;
+    }
+
+    .chart-wrap {
+      margin-top: 18px;
+    }
+
+    /* ═══ MINI-MÉTRICAS ═══════════════════════════════════════════════ */
+    .mini-stat {
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: var(--r-md);
+      padding: 12px 14px;
+    }
+
+    .mini-label {
+      color: var(--txt-4);
+    }
+
+    .mini-value {
+      font-size: 19px;
+      font-weight: 800;
+      letter-spacing: -.03em;
+      color: var(--txt-1);
+    }
+
+    .mini-value.brand {
+      color: var(--primary-100);
+    }
+
+    .mini-value.green {
+      color: #0E7A55;
+    }
+
+    .mini-value.amber,
+    .mini-value.blue {
+      color: var(--blue-500);
+    }
+
+    /* ═══ PÍLDORAS DE NOTA Y TRAMOS ═══════════════════════════════════ */
+    .score-avg-pill {
+      background: var(--n-50);
+      border: 1px solid var(--border);
+      box-shadow: none;
+    }
+
+    .score-avg-val {
+      font-weight: 800;
+      letter-spacing: -.03em;
+      color: var(--txt-1);
+    }
+
+    .score-avg-label,
+    .score-meta-lbl {
+      color: var(--txt-4);
+    }
+
+    .score-badge,
+    .t2b-badge {
+      background: var(--n-50);
+      border: 1px solid var(--border);
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--txt-3);
+      box-shadow: none;
+    }
+
+    .t2b-value {
+      font-weight: 800;
+      letter-spacing: -.025em;
+      color: var(--txt-1);
+    }
+
+    /* ═══ RANKINGS ════════════════════════════════════════════════════ */
+    .lb-bar-track,
+    .plb-bar-track {
+      background: var(--n-100);
+    }
+
+    .lb-item,
+    .plb-item {
+      border-color: var(--border);
+      box-shadow: none;
+    }
+
+    .plb-item:hover {
+      border-color: var(--border-md);
+      box-shadow: none;
+      transform: none;
+    }
+
+    .lb-label-wrap,
+    .plb-label {
+      font-weight: 600;
+      letter-spacing: -.012em;
+      color: var(--txt-1);
+    }
+
+    .lb-pct,
+    .plb-pct {
+      font-weight: 800;
+      letter-spacing: -.025em;
+      color: var(--txt-1);
+    }
+
+    .plb-n {
+      color: var(--txt-4);
+    }
+
+    /* ═══ FILTROS ═════════════════════════════════════════════════════
+       Fuera el cristal esmerilado: sobre la barra lateral blanca no hay
+       nada que difuminar y el `backdrop-filter` sólo costaba pintado. */
+    .filter-select {
+      background-color: var(--n-0);
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+      border: 1px solid var(--border-md);
+      border-radius: var(--r-sm);
+      box-shadow: none;
+      color: var(--txt-1);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 7px 26px 7px 11px;
+      transition: border-color var(--tr);
+    }
+
+    .filter-select:hover {
+      border-color: var(--n-500);
+    }
+
+    .filter-select:focus {
+      border-color: var(--primary-100);
+      box-shadow: none;
+    }
+
+    .filter-group-label {
+      color: var(--txt-4);
+      margin-bottom: 6px;
+    }
+
+    /* ═══ TARJETAS DE LECTURA ═════════════════════════════════════════ */
+    .insight-card {
+      padding: 20px 22px;
+    }
+
+    .insight-icon {
+      background: var(--n-100);
+      color: var(--blue-500);
+      box-shadow: none;
+    }
+
+    .insight-title {
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: -.015em;
+      color: var(--txt-1);
+    }
+
+    .insight-body {
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--txt-2);
+      text-wrap: pretty;
+    }
+
+    .insight-body strong {
+      color: var(--txt-1);
+      font-weight: 800;
+    }
+
+    /* ═══ TABLAS ══════════════════════════════════════════════════════ */
+    .data-table thead th {
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--txt-4);
+      border-bottom: 1px solid var(--border-md);
+    }
+
+    .data-table tbody td {
+      border-bottom: 1px solid var(--border);
+      color: var(--txt-2);
+    }
+
+    .data-table tbody tr:hover td {
+      background: var(--n-50);
+    }
+
+    /* ═══ SIN DATOS ═══════════════════════════════════════════════════
+       Nada se queda callado ni en blanco: si un bloque no tiene datos, lo
+       dice, con su motivo. */
+    .no-data {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      min-height: 120px;
+      border: 1px dashed var(--border-md);
+      border-radius: var(--r-md);
+      background: repeating-linear-gradient(-45deg, var(--n-50) 0 7px, var(--n-100) 7px 14px);
+      color: var(--txt-3);
+      font-size: 12.5px;
+      font-weight: 600;
+      text-align: center;
+      padding: 18px;
+    }
+
+    /* Aviso global de carga: mismo lenguaje que las tarjetas, en claro.
+       Iba en oscuro con texto gris azulado y no pertenecía a nada. */
+    #dataBanner {
+      background: var(--n-0);
+      border: 1px solid var(--border-md);
+      border-left: 3px solid var(--primary-100);
+      border-radius: var(--r-md);
+      box-shadow: var(--sh-pop);
+      color: var(--txt-2);
+      font-size: 12.5px;
+      line-height: 1.55;
+      padding: 14px 16px;
+      gap: 12px;
+    }
+
+    #dataBanner div {
+      color: var(--txt-2) !important;
+    }
+
+    /* Los botones del aviso llevan su estilo en línea desde el JS, así que
+       aquí hace falta !important para traerlos al sistema. */
+    #dataBanner button {
+      font-family: inherit !important;
+      font-size: 11.5px !important;
+      font-weight: 700 !important;
+      border-radius: var(--r-full) !important;
+      padding: 6px 13px !important;
+      background: var(--n-0) !important;
+      border: 1px solid var(--border-md) !important;
+      color: var(--txt-2) !important;
+      cursor: pointer;
+      transition: border-color var(--tr), color var(--tr);
+    }
+
+    #dataBanner button:hover {
+      border-color: var(--primary-100) !important;
+      color: var(--primary-100) !important;
+    }
+
+    #dataBanner svg {
+      stroke: var(--primary-100) !important;
+      margin-top: 2px;
+    }
+
+    /* Imagen que no llega: se dice, en lugar de dejar el alt suelto sobre un
+       hueco gris. */
+    .media-gallery-item.is-missing img,
+    .video-thumb-block.is-missing img {
+      display: none;
+    }
+
+    .media-gallery-item.is-missing::before,
+    .video-thumb-block.is-missing::before {
+      content: 'Imagen no disponible';
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 150px;
+      border-radius: var(--r-md);
+      background: repeating-linear-gradient(-45deg, var(--n-50) 0 7px, var(--n-100) 7px 14px);
+      color: var(--txt-4);
+      font-size: 11.5px;
+      font-weight: 600;
+    }
+
+    .media-gallery-item.is-missing .media-zoom-button {
+      display: none;
+    }
+
+    /* ═══ MODAL ═══════════════════════════════════════════════════════ */
+    .data-modal {
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      box-shadow: var(--sh-lg);
+    }
+
+    .data-modal-title {
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: -.02em;
+      color: var(--txt-1);
+    }
+
+    .data-modal-input {
+      border: 1px solid var(--border-md);
+      border-radius: var(--r-sm);
+      background: var(--n-0);
+      font-family: inherit;
+      font-size: 12.5px;
+      color: var(--txt-1);
+    }
+
+    .data-modal-input:focus {
+      border-color: var(--primary-100);
+      box-shadow: none;
+    }
+
+    .btn-primary-action {
+      background: var(--txt-1);
+      color: var(--n-0);
+      border: 1px solid var(--txt-1);
+      border-radius: var(--r-full);
+      font-family: inherit;
+      font-weight: 700;
+      box-shadow: none;
+    }
+
+    .btn-primary-action:hover {
+      background: #1B2740;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .btn-secondary-action {
+      background: var(--n-0);
+      border: 1px solid var(--border-md);
+      border-radius: var(--r-full);
+      color: var(--txt-2);
+      font-family: inherit;
+      font-weight: 700;
+    }
+
+    .btn-secondary-action:hover {
+      border-color: var(--txt-1);
+      color: var(--txt-1);
+      background: var(--n-0);
+    }
+
+    .drop-zone {
+      border: 1px dashed var(--border-md);
+      border-radius: var(--r-md);
+      background: var(--n-50);
+      color: var(--txt-3);
+    }
+
+    .drop-zone:hover,
+    .drop-zone.dragover {
+      border-color: var(--primary-100);
+      background: var(--n-0);
+      color: var(--txt-1);
+    }
+
+    /* ═══ BULLETS / LIKERT / SENTIMIENTO ══════════════════════════════ */
+    .bl-kpi-num {
+      font-weight: 800;
+      letter-spacing: -.04em;
+      color: var(--txt-1);
+    }
+
+    .bl-kpi-label,
+    .bl-kpi-desc {
+      color: var(--txt-4);
+    }
+
+    .bl-section-title {
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--txt-4);
+    }
+
+    .bl-bullet-track,
+    .bl-likert-bar {
+      background: var(--n-100);
+    }
+
+    .bl-insight {
+      background: var(--n-50);
+      border: 1px solid var(--border);
+      border-radius: var(--r-md);
+    }
+
+    .bl-insight-txt {
+      color: var(--txt-2);
+      font-size: 12.5px;
+      line-height: 1.55;
+    }
+
+    .sent-hero,
+    .sent-index {
+      background: var(--n-50);
+      border: 1px solid var(--border);
+      box-shadow: none;
+    }
+
+    .sent-hero-val,
+    .sent-index-val {
+      font-weight: 800;
+      letter-spacing: -.035em;
+    }
+
+    .sent-quote {
+      background: var(--n-50);
+      border: 1px solid var(--border);
+      border-left: 2px solid var(--blue-200);
+      border-radius: var(--r-md);
+      color: var(--txt-2);
+      font-size: 12.5px;
+      line-height: 1.6;
+    }
+
+    /* ═══ VÍDEO Y MEDIOS ══════════════════════════════════════════════ */
+    .video-thumb-block,
+    .media-gallery-item,
+    .video-thumb {
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      box-shadow: none;
+      overflow: hidden;
+      transition: border-color var(--tr);
+    }
+
+    .video-thumb-block:hover,
+    .media-gallery-item:hover,
+    .video-thumb:hover {
+      border-color: var(--border-md);
+      box-shadow: none;
+      transform: none;
+    }
+
+    .video-play-btn,
+    .video-play-icon {
+      background: var(--primary-100);
+      box-shadow: var(--sh-pop);
+    }
+
+    /* ═══ BARRA DE PROGRESO ═══════════════════════════════════════════ */
+    #scrollProgress {
+      height: 2px;
+      background: var(--primary-100);
+      border-radius: 0;
+    }
+
+    /* ═══ MÓVIL ═══════════════════════════════════════════════════════ */
+    .mobile-menu-btn {
+      border: 1px solid var(--border-md);
+      border-radius: var(--r-md);
+      background: var(--n-0);
+      color: var(--txt-1);
+      box-shadow: var(--sh-pop);
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        box-shadow: var(--sh-lg);
+      }
+
+      .page-content {
+        padding: 18px 16px 72px;
+      }
+
+      .card-inner {
+        padding: 18px;
+      }
+
+      /* Cabecera en móvil: una sola línea. El rótulo se queda en el nombre
+         de la campaña —la miga «Samplia › Campañas ›» no cabe y tampoco
+         aporta— y los tres botones pasan a icono. Antes el texto envolvía a
+         dos líneas y los botones se salían de la barra. */
+      .topbar {
+        padding: 0 12px 0 58px;
+        gap: 8px;
+      }
+
+      .topbar-breadcrumb {
+        font-size: 12px;
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .topbar-breadcrumb .crumb-prefix {
+        display: none;
+      }
+
+      .topbar-right {
+        gap: 6px;
+        flex: 0 0 auto;
+      }
+
+      .btn-ds-txt {
+        display: none;
+      }
+
+      .btn-pdf,
+      .btn-datasource,
+      .btn-eval {
+        padding: 8px 10px;
+      }
+
+      .kpi-value {
+        font-size: 26px;
+      }
+
+      .kpi-label {
+        margin-bottom: 8px;
+      }
+    }
+
+    @media print {
+
+      .sidebar,
+      .topbar,
+      .mobile-menu-btn,
+      #scrollProgress {
+        display: none !important;
+      }
+
+      .main-area::before {
+        display: none;
+      }
+
+      .card,
+      .insight-card {
+        break-inside: avoid;
+      }
+    }
+
   </style>
 </head>
 
@@ -3015,16 +4088,6 @@
               <line x1="3" y1="10" x2="21" y2="10" />
             </svg>
             Duración: Del 28 de agosto al 04 de septiembre de 2026.
-          </div>
-          <div class="sc-meta-row">
-            <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="3" y="4" width="18" height="18" rx="2" />
-              <line x1="16" y1="2" x2="16" y2="6" />
-              <line x1="8" y1="2" x2="8" y2="6" />
-              <line x1="3" y1="10" x2="21" y2="10" />
-            </svg>
-            Campaña 2026.
           </div>
           <div class="sc-meta-row">
             <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none"
@@ -3169,7 +4232,7 @@
             </svg>
           </button>
           <div class="topbar-breadcrumb">
-            Samplia &rsaquo; Campañas &rsaquo; <strong>Platanitos Lima Limón Amazonia</strong>
+            <span class="crumb-prefix">Samplia &rsaquo; Campañas &rsaquo; </span><strong>Platanitos Lima Limón Amazonia</strong>
           </div>
         </div>
         <div class="topbar-right">
@@ -3183,7 +4246,7 @@
               <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path>
               <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
             </svg>
-            Fuente de datos
+            <span class="btn-ds-txt">Fuente de datos</span>
           </button>
           <input type="file" id="csvFileInput" accept=".csv" style="display:none" onchange="handleCSVFileUpload(event)" />
           <button class="btn-pdf" id="downloadPdfBtn">
@@ -3220,7 +4283,7 @@
 
 
         <!-- ── KPIs ── -->
-        <div id="kpis" style="scroll-margin-top:72px;">
+        <div id="kpis" style="scroll-margin-top:84px;">
           <div class="section-header">
             <div class="section-accent"></div>
             <div class="section-title">Resumen ejecutivo</div>
@@ -3232,7 +4295,7 @@
                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg>
               </div>
               <div class="kpi-label">Encuestados</div>
-              <div class="kpi-value" style="color:var(--accent-100);" id="kpiTotal">—</div>
+              <div class="kpi-value" id="kpiTotal">—</div>
               <div class="kpi-sub">respondieron la encuesta</div>
             </div>
             <div class="kpi-card">
@@ -3240,7 +4303,7 @@
                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" /><circle cx="12" cy="12" r="3" /></svg>
               </div>
               <div class="kpi-label">Descubrieron el snack con Samplia</div>
-              <div class="kpi-value" style="color:var(--accent-100);" id="kpiConocimiento">—</div>
+              <div class="kpi-value" id="kpiConocimiento">—</div>
               <div id="kpiConocimientoBase"></div>
             </div>
             <div class="kpi-card">
@@ -3248,7 +4311,7 @@
                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" /><circle cx="12" cy="12" r="3" /></svg>
               </div>
               <div class="kpi-label">Nota de textura y crunch</div>
-              <div class="kpi-value" style="color:var(--accent-100);" id="kpiTextura">—</div>
+              <div class="kpi-value" id="kpiTextura">—</div>
               <div id="kpiTexturaBase"></div>
             </div>
             <div class="kpi-card">
@@ -3256,7 +4319,7 @@
                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" /></svg>
               </div>
               <div class="kpi-label">Valoración de sabor</div>
-              <div class="kpi-value" style="color:var(--accent-100);" id="kpiSabor">—</div>
+              <div class="kpi-value" id="kpiSabor">—</div>
               <div id="kpiSaborBench"></div>
               <div id="kpiSaborRelated" style="font-size:10.5px;color:var(--txt-3);margin-top:6px;line-height:1.4;"></div>
             </div>
@@ -3265,7 +4328,7 @@
                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1" /><circle cx="19" cy="21" r="1" /><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12" /></svg>
               </div>
               <div class="kpi-label">Comprarían</div>
-              <div class="kpi-value" style="color:var(--accent-100);" id="kpiIntencion">—</div>
+              <div class="kpi-value" id="kpiIntencion">—</div>
               <div id="kpiIntencionBench"></div>
             </div>
             <div class="kpi-card">
@@ -3273,14 +4336,14 @@
                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>
               </div>
               <div class="kpi-label">NPS</div>
-              <div class="kpi-value" style="color:var(--accent-100);" id="kpiValoracion">—</div>
+              <div class="kpi-value" id="kpiValoracion">—</div>
               <div id="kpiValoracionBench"></div>
             </div>
           </div>
         </div>
 
         <!-- ── DEMOGRAPHICS ── -->
-        <div id="demograficos" style="scroll-margin-top:72px;">
+        <div id="demograficos" style="scroll-margin-top:84px;">
           <div class="section-header">
             <div class="section-accent"></div>
             <div class="section-title">Demográficos</div>
@@ -3297,11 +4360,11 @@
               </div>
             </div>
           </div>
-          <!-- Edad card moved to pair-row alongside variedad chart in #producto section -->
+
         </div>
 
         <!-- ── VARIEDAD Y PRUEBA DE PRODUCTO ── -->
-        <div id="producto" style="scroll-margin-top:72px;">
+        <div id="producto" style="scroll-margin-top:84px;">
           <div class="section-header" style="display: none;">
             <div class="section-accent"></div>
             <div class="section-title" style="display: none;">Variedad y prueba de producto</div>
@@ -3311,7 +4374,7 @@
         </div>
 
         <!-- ── CONOCIMIENTO Y DESCUBRIMIENTO ── -->
-        <div id="conocimiento" style="scroll-margin-top:72px;">
+        <div id="conocimiento" style="scroll-margin-top:84px;">
           <div class="section-header">
             <div class="section-accent"></div>
             <div class="section-title">Conocimiento y hábitos de consumo</div>
@@ -3321,7 +4384,7 @@
         </div>
 
         <!-- ── VALORACIÓN SENSORIAL ── -->
-        <div id="valoracion" style="scroll-margin-top:72px;">
+        <div id="valoracion" style="scroll-margin-top:84px;">
           <div class="section-header">
             <div class="section-accent"></div>
             <div class="section-title">Valoración sensorial</div>
@@ -3331,7 +4394,7 @@
         </div>
 
         <!-- ── INTENCIÓN DE COMPRA Y RECOMENDACIÓN ── -->
-        <div id="intencion" style="scroll-margin-top:72px;">
+        <div id="intencion" style="scroll-margin-top:84px;">
           <div class="section-header">
             <div class="section-accent"></div>
             <div class="section-title">Intención de compra y recomendación</div>
@@ -3369,7 +4432,7 @@
         </div>
 
         <!-- ── MEDIA ── -->
-        <div id="media" style="scroll-margin-top:72px;">
+        <div id="media" style="scroll-margin-top:84px;">
           <div class="section-header">
             <div class="section-accent"></div>
             <div class="section-title">Fotos de la activación</div>
@@ -3401,7 +4464,7 @@
         </div>
 
         <!-- ── INSIGHTS ── -->
-        <div id="insights" style="scroll-margin-top:72px;">
+        <div id="insights" style="scroll-margin-top:84px;">
           <div class="section-header">
             <div class="section-accent"></div>
             <div class="section-title">Insights de negocio</div>
@@ -3419,14 +4482,35 @@
     </div>
   </div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
-  <script
+  <!-- `defer`: se descubren al empezar a parsear la cabecera y se descargan en
+       paralelo con el HTML, pero no se ejecutan hasta que el documento está
+       listo. Antes colgaban del final del <body>, así que su descarga ni
+       siquiera empezaba hasta haber parseado ~300 KB de documento.
+       Chart.js pasa además al build minificado (~205 KB -> ~78 KB).
+       html2canvas y jsPDF ya no estan aqui: pesan ~350 KB y solo hacen falta
+       si alguien pulsa «Descargar PDF», asi que se cargan en ese momento. -->
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <script defer
     src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
   <script>
-    Chart.defaults.font.family = "'Roboto', sans-serif";
+    /* -- Chart.js: mismos ajustes de base que el informe de comunidad --
+       Va dentro de una función porque la librería llega diferida: al
+       ejecutarse este script `Chart` todavía no existe. Se llama en INIT. */
+    function applyChartDefaults() {
+    Chart.defaults.font.family = "'Manrope', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif";
+    Chart.defaults.color = '#6C7280';
+    Chart.defaults.font.weight = 500;
+    Chart.defaults.animation.duration =
+      window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 480;
+    Chart.defaults.animation.easing = 'easeOutQuart';
+    Chart.defaults.plugins.tooltip.backgroundColor = 'rgba(15,23,41,.94)';
+    Chart.defaults.plugins.tooltip.cornerRadius = 8;
+    Chart.defaults.plugins.tooltip.padding = 11;
+    Chart.defaults.plugins.tooltip.caretSize = 5;
+    Chart.defaults.plugins.tooltip.titleFont = { weight: 700, size: 12 };
+    Chart.defaults.plugins.tooltip.bodyFont = { weight: 500, size: 12 };
+    }
 
     /* === SAMPLIA LOGO === */
     const LIGHT_MODE_SAMPLIA_LOGO = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTQwIiBoZWlnaHQ9IjQwIiB2aWV3Qm94PSIwIDAgMTQwIDQwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cGF0aCBkPSJNMTI2LjYwOSAyMS43ODE5QzEyNi42MDkgMjAuNTQ5OSAxMjYuODUxIDE5LjQ1NzIgMTI3LjMzNSAxOC41MDM5QzEyNy44MzMgMTcuNTUwNSAxMjguNTAxIDE2LjgxNzIgMTI5LjMzNyAxNi4zMDM5QzEzMC4xODcgMTUuNzkwNSAxMzEuMTMzIDE1LjUzMzkgMTMyLjE3NSAxNS41MzM5QzEzMy4wODQgMTUuNTMzOSAxMzMuODc2IDE1LjcxNzIgMTM0LjU1MSAxNi4wODM5QzEzNS4yNCAxNi40NTA1IDEzNS43OSAxNi45MTI1IDEzNi4yMDEgMTcuNDY5OVYxNS43MzE5SDEzOS4zMDNWMjcuOTE5OUgxMzYuMjAxVjI2LjEzNzlDMTM1LjgwNSAyNi43MDk5IDEzNS4yNTUgMjcuMTg2NSAxMzQuNTUxIDI3LjU2NzlDMTMzLjg2MSAyNy45MzQ1IDEzMy4wNjIgMjguMTE3OSAxMzIuMTUzIDI4LjExNzlDMTMxLjEyNiAyOC4xMTc5IDEzMC4xODcgMjcuODUzOSAxMjkuMzM3IDI3LjMyNTlDMTI4LjUwMSAyNi43OTc5IDEyNy44MzMgMjYuMDU3MiAxMjcuMzM1IDI1LjEwMzlDMTI2Ljg1MSAyNC4xMzU5IDEyNi42MDkgMjMuMDI4NSAxMjYuNjA5IDIxLjc4MTlaTTEzNi4yMDEgMjEuODI1OUMxMzYuMjAxIDIxLjA3NzkgMTM2LjA1NCAyMC40Mzk5IDEzNS43NjEgMTkuOTExOUMxMzUuNDY3IDE5LjM2OTIgMTM1LjA3MSAxOC45NTg1IDEzNC41NzMgMTguNjc5OUMxMzQuMDc0IDE4LjM4NjUgMTMzLjUzOSAxOC4yMzk5IDEzMi45NjcgMTguMjM5OUMxMzIuMzk1IDE4LjIzOTkgMTMxLjg2NyAxOC4zNzkyIDEzMS4zODMgMTguNjU3OUMxMzAuODk5IDE4LjkzNjUgMTMwLjUwMyAxOS4zNDcyIDEzMC4xOTUgMTkuODg5OUMxMjkuOTAxIDIwLjQxNzkgMTI5Ljc1NSAyMS4wNDg1IDEyOS43NTUgMjEuNzgxOUMxMjkuNzU1IDIyLjUxNTIgMTI5LjkwMSAyMy4xNjA1IDEzMC4xOTUgMjMuNzE3OUMxMzAuNTAzIDI0LjI2MDUgMTMwLjg5OSAyNC42Nzg1IDEzMS4zODMgMjQuOTcxOUMxMzEuODgxIDI1LjI2NTIgMTMyLjQwOSAyNS40MTE5IDEzMi45NjcgMjUuNDExOUMxMzMuNTM5IDI1LjQxMTkgMTM0LjA3NCAyNS4yNzI1IDEzNC41NzMgMjQuOTkzOUMxMzUuMDcxIDI0LjcwMDUgMTM1LjQ2NyAyNC4yODk5IDEzNS43NjEgMjMuNzYxOUMxMzYuMDU0IDIzLjIxOTIgMTM2LjIwMSAyMi41NzM5IDEzNi4yMDEgMjEuODI1OVoiIGZpbGw9IiMyMDIxMjQiLz4KPHBhdGggZD0iTTEyMy4yOCAxNC4yNzk5QzEyMi43MzcgMTQuMjc5OSAxMjIuMjgyIDE0LjExMTIgMTIxLjkxNiAxMy43NzM5QzEyMS41NjQgMTMuNDIxOSAxMjEuMzg4IDEyLjk4OTIgMTIxLjM4OCAxMi40NzU5QzEyMS4zODggMTEuOTYyNSAxMjEuNTY0IDExLjUzNzIgMTIxLjkxNiAxMS4xOTk5QzEyMi4yODIgMTAuODQ3OSAxMjIuNzM3IDEwLjY3MTkgMTIzLjI4IDEwLjY3MTlDMTIzLjgyMiAxMC42NzE5IDEyNC4yNyAxMC44NDc5IDEyNC42MjIgMTEuMTk5OUMxMjQuOTg4IDExLjUzNzIgMTI1LjE3MiAxMS45NjI1IDEyNS4xNzIgMTIuNDc1OUMxMjUuMTcyIDEyLjk4OTIgMTI0Ljk4OCAxMy40MjE5IDEyNC42MjIgMTMuNzczOUMxMjQuMjcgMTQuMTExMiAxMjMuODIyIDE0LjI3OTkgMTIzLjI4IDE0LjI3OTlaTTEyNC43OTggMTUuNzMxOVYyNy45MTk5SDEyMS43MThWMTUuNzMxOUgxMjQuNzk4WiIgZmlsbD0iIzIwMjEyNCIvPgo8cGF0aCBkPSJNMTE5LjExNSAxMS42Mzk5VjI3LjkxOTlIMTE2LjAzNVYxMS42Mzk5SDExOS4xMTVaIiBmaWxsPSIjMjAyMTI0Ii8+CjxwYXRoIGQ9Ik0xMDQuNjQ1IDE3LjQ5MTlDMTA1LjA0MSAxNi45MzQ1IDEwNS41ODMgMTYuNDcyNSAxMDYuMjczIDE2LjEwNTlDMTA2Ljk3NyAxNS43MjQ1IDEwNy43NzYgMTUuNTMzOSAxMDguNjcxIDE1LjUzMzlDMTA5LjcxMiAxNS41MzM5IDExMC42NTEgMTUuNzkwNSAxMTEuNDg3IDE2LjMwMzlDMTEyLjMzNyAxNi44MTcyIDExMy4wMDUgMTcuNTUwNSAxMTMuNDg5IDE4LjUwMzlDMTEzLjk4NyAxOS40NDI1IDExNC4yMzcgMjAuNTM1MiAxMTQuMjM3IDIxLjc4MTlDMTE0LjIzNyAyMy4wMjg1IDExMy45ODcgMjQuMTM1OSAxMTMuNDg5IDI1LjEwMzlDMTEzLjAwNSAyNi4wNTcyIDExMi4zMzcgMjYuNzk3OSAxMTEuNDg3IDI3LjMyNTlDMTEwLjY1MSAyNy44NTM5IDEwOS43MTIgMjguMTE3OSAxMDguNjcxIDI4LjExNzlDMTA3Ljc3NiAyOC4xMTc5IDEwNi45ODQgMjcuOTM0NSAxMDYuMjk1IDI3LjU2NzlDMTA1LjYyIDI3LjIwMTIgMTA1LjA3IDI2LjczOTIgMTA0LjY0NSAyNi4xODE5VjMzLjcyNzlIMTAxLjU2NVYxNS43MzE5SDEwNC42NDVWMTcuNDkxOVpNMTExLjA5MSAyMS43ODE5QzExMS4wOTEgMjEuMDQ4NSAxMTAuOTM3IDIwLjQxNzkgMTEwLjYyOSAxOS44ODk5QzExMC4zMzUgMTkuMzQ3MiAxMDkuOTM5IDE4LjkzNjUgMTA5LjQ0MSAxOC42NTc5QzEwOC45NTcgMTguMzc5MiAxMDguNDI5IDE4LjIzOTkgMTA3Ljg1NyAxOC4yMzk5QzEwNy4yOTkgMTguMjM5OSAxMDYuNzcxIDE4LjM4NjUgMTA2LjI3MyAxOC42Nzk5QzEwNS43ODkgMTguOTU4NSAxMDUuMzkzIDE5LjM2OTIgMTA1LjA4NSAxOS45MTE5QzEwNC43OTEgMjAuNDU0NSAxMDQuNjQ1IDIxLjA5MjUgMTA0LjY0NSAyMS44MjU5QzEwNC42NDUgMjIuNTU5MiAxMDQuNzkxIDIzLjE5NzIgMTA1LjA4NSAyMy43Mzk5QzEwNS4zOTMgMjQuMjgyNSAxMDUuNzg5IDI0LjcwMDUgMTA2LjI3MyAyNC45OTM5QzEwNi43NzEgMjUuMjcyNSAxMDcuMjk5IDI1LjQxMTkgMTA3Ljg1NyAyNS40MTE5QzEwOC40MjkgMjUuNDExOSAxMDguOTU3IDI1LjI2NTIgMTA5LjQ0MSAyNC45NzE5QzEwOS45MzkgMjQuNjc4NSAxMTAuMzM1IDI0LjI2MDUgMTEwLjYyOSAyMy43MTc5QzExMC45MzcgMjMuMTc1MiAxMTEuMDkxIDIyLjUyOTkgMTExLjA5MSAyMS43ODE5WiIgZmlsbD0iIzIwMjEyNCIvPgo8cGF0aCBkPSJNOTQuMDg3OCAxNS41NTU5Qzk1LjU4MzggMTUuNTU1OSA5Ni43ODY1IDE2LjAxNzkgOTcuNjk1OCAxNi45NDE5Qzk4LjYxOTggMTcuODUxMiA5OS4wODE4IDE5LjEyNzIgOTkuMDgxOCAyMC43Njk5VjI3LjkxOTlIOTYuMDAxOFYyMS4xODc5Qzk2LjAwMTggMjAuMjM0NiA5NS43NTk4IDE5LjUwODYgOTUuMjc1OCAxOS4wMDk5Qzk0Ljc5MTggMTguNDk2NiA5NC4xMzE4IDE4LjIzOTkgOTMuMjk1OCAxOC4yMzk5QzkyLjQ1OTggMTguMjM5OSA5MS43OTI1IDE4LjQ5NjYgOTEuMjkzOCAxOS4wMDk5QzkwLjgwOTggMTkuNTA4NiA5MC41Njc4IDIwLjIzNDYgOTAuNTY3OCAyMS4xODc5VjI3LjkxOTlIODcuNDg3OFYyMS4xODc5Qzg3LjQ4NzggMjAuMjM0NiA4Ny4yNDU4IDE5LjUwODYgODYuNzYxOCAxOS4wMDk5Qzg2LjI3NzggMTguNDk2NiA4NS42MTc4IDE4LjIzOTkgODQuNzgxOCAxOC4yMzk5QzgzLjkzMTIgMTguMjM5OSA4My4yNTY1IDE4LjQ5NjYgODIuNzU3OCAxOS4wMDk5QzgyLjI3MzggMTkuNTA4NiA4Mi4wMzE4IDIwLjIzNDYgODIuMDMxOCAyMS4xODc5VjI3LjkxOTlINzguOTUxOFYxNS43MzE5SDgyLjAzMThWMTcuMjA1OUM4Mi40Mjc4IDE2LjY5MjYgODIuOTMzOCAxNi4yODkyIDgzLjU0OTggMTUuOTk1OUM4NC4xODA1IDE1LjcwMjYgODQuODY5OCAxNS41NTU5IDg1LjYxNzggMTUuNTU1OUM4Ni41NzEyIDE1LjU1NTkgODcuNDIxOCAxNS43NjEyIDg4LjE2OTggMTYuMTcxOUM4OC45MTc4IDE2LjU2NzkgODkuNDk3MiAxNy4xMzk5IDg5LjkwNzggMTcuODg3OUM5MC4zMDM4IDE3LjE4MzkgOTAuODc1OCAxNi42MTkyIDkxLjYyMzggMTYuMTkzOUM5Mi4zODY1IDE1Ljc2ODYgOTMuMjA3OCAxNS41NTU5IDk0LjA4NzggMTUuNTU1OVoiIGZpbGw9IiMyMDIxMjQiLz4KPHBhdGggZD0iTTYzLjY4OTcgMjEuNzgxOUM2My42ODk3IDIwLjU0OTkgNjMuOTMxNyAxOS40NTcyIDY0LjQxNTcgMTguNTAzOUM2NC45MTQ0IDE3LjU1MDUgNjUuNTgxNyAxNi44MTcyIDY2LjQxNzcgMTYuMzAzOUM2Ny4yNjg0IDE1Ljc5MDUgNjguMjE0NCAxNS41MzM5IDY5LjI1NTcgMTUuNTMzOUM3MC4xNjUgMTUuNTMzOSA3MC45NTcgMTUuNzE3MiA3MS42MzE3IDE2LjA4MzlDNzIuMzIxIDE2LjQ1MDUgNzIuODcxIDE2LjkxMjUgNzMuMjgxNyAxNy40Njk5VjE1LjczMTlINzYuMzgzN1YyNy45MTk5SDczLjI4MTdWMjYuMTM3OUM3Mi44ODU3IDI2LjcwOTkgNzIuMzM1NyAyNy4xODY1IDcxLjYzMTcgMjcuNTY3OUM3MC45NDI0IDI3LjkzNDUgNzAuMTQzIDI4LjExNzkgNjkuMjMzNyAyOC4xMTc5QzY4LjIwNyAyOC4xMTc5IDY3LjI2ODQgMjcuODUzOSA2Ni40MTc3IDI3LjMyNTlDNjUuNTgxNyAyNi43OTc5IDY0LjkxNDQgMjYuMDU3MiA2NC40MTU3IDI1LjEwMzlDNjMuOTMxNyAyNC4xMzU5IDYzLjY4OTcgMjMuMDI4NSA2My42ODk3IDIxLjc4MTlaTTczLjI4MTcgMjEuODI1OUM3My4yODE3IDIxLjA3NzkgNzMuMTM1IDIwLjQzOTkgNzIuODQxNyAxOS45MTE5QzcyLjU0ODQgMTkuMzY5MiA3Mi4xNTI0IDE4Ljk1ODUgNzEuNjUzNyAxOC42Nzk5QzcxLjE1NSAxOC4zODY1IDcwLjYxOTcgMTguMjM5OSA3MC4wNDc3IDE4LjIzOTlDNjkuNDc1NyAxOC4yMzk5IDY4Ljk0NzcgMTguMzc5MiA2OC40NjM3IDE4LjY1NzlDNjcuOTc5NyAxOC45MzY1IDY3LjU4MzcgMTkuMzQ3MiA2Ny4yNzU3IDE5Ljg4OTlDNjYuOTgyNCAyMC40MTc5IDY2LjgzNTcgMjEuMDQ4NSA2Ni44MzU3IDIxLjc4MTlDNjYuODM1NyAyMi41MTUyIDY2Ljk4MjQgMjMuMTYwNSA2Ny4yNzU3IDIzLjcxNzlDNjcuNTgzNyAyNC4yNjA1IDY3Ljk3OTcgMjQuNjc4NSA2OC40NjM3IDI0Ljk3MTlDNjguOTYyNCAyNS4yNjUyIDY5LjQ5MDQgMjUuNDExOSA3MC4wNDc3IDI1LjQxMTlDNzAuNjE5NyAyNS40MTE5IDcxLjE1NSAyNS4yNzI1IDcxLjY1MzcgMjQuOTkzOUM3Mi4xNTI0IDI0LjcwMDUgNzIuNTQ4NCAyNC4yODk5IDcyLjg0MTcgMjMuNzYxOUM3My4xMzUgMjMuMjE5MiA3My4yODE3IDIyLjU3MzkgNzMuMjgxNyAyMS44MjU5WiIgZmlsbD0iIzIwMjEyNCIvPgo8cGF0aCBkPSJNNTYuODE3NCAyOC4wNzM5QzU1Ljc0NjggMjguMDczOSA1NC43Nzg4IDI3Ljg5MDUgNTMuOTEzNCAyNy41MjM5QzUzLjA2MjggMjcuMTU3MiA1Mi4zODgxIDI2LjYyOTIgNTEuODg5NCAyNS45Mzk5QzUxLjM5MDggMjUuMjUwNSA1MS4xMzQxIDI0LjQzNjUgNTEuMTE5NCAyMy40OTc5SDU0LjQxOTRDNTQuNDYzNCAyNC4xMjg1IDU0LjY4MzQgMjQuNjI3MiA1NS4wNzk0IDI0Ljk5MzlDNTUuNDkwMSAyNS4zNjA1IDU2LjA0NzQgMjUuNTQzOSA1Ni43NTE0IDI1LjU0MzlDNTcuNDcwMSAyNS41NDM5IDU4LjAzNDggMjUuMzc1MiA1OC40NDU0IDI1LjAzNzlDNTguODU2MSAyNC42ODU5IDU5LjA2MTQgMjQuMjMxMiA1OS4wNjE0IDIzLjY3MzlDNTkuMDYxNCAyMy4yMTkyIDU4LjkyMjEgMjIuODQ1MiA1OC42NDM0IDIyLjU1MTlDNTguMzY0OCAyMi4yNTg1IDU4LjAxMjggMjIuMDMxMiA1Ny41ODc0IDIxLjg2OTlDNTcuMTc2OCAyMS42OTM5IDU2LjYwNDggMjEuNTAzMiA1NS44NzE0IDIxLjI5NzlDNTQuODc0MSAyMS4wMDQ1IDU0LjA2MDEgMjAuNzE4NSA1My40Mjk0IDIwLjQzOTlDNTIuODEzNCAyMC4xNDY1IDUyLjI3ODEgMTkuNzEzOSA1MS44MjM0IDE5LjE0MTlDNTEuMzgzNCAxOC41NTUyIDUxLjE2MzQgMTcuNzc3OSA1MS4xNjM0IDE2LjgwOTlDNTEuMTYzNCAxNS45MDA1IDUxLjM5MDggMTUuMTA4NSA1MS44NDU0IDE0LjQzMzlDNTIuMzAwMSAxMy43NTkyIDUyLjkzODEgMTMuMjQ1OSA1My43NTk0IDEyLjg5MzlDNTQuNTgwOCAxMi41MjcyIDU1LjUxOTQgMTIuMzQzOSA1Ni41NzU0IDEyLjM0MzlDNTguMTU5NCAxMi4zNDM5IDU5LjQ0MjggMTIuNzMyNSA2MC40MjU0IDEzLjUwOTlDNjEuNDIyOCAxNC4yNzI1IDYxLjk3MjggMTUuMzQzMiA2Mi4wNzU0IDE2LjcyMTlINTguNjg3NEM1OC42NTgxIDE2LjE5MzkgNTguNDMwOCAxNS43NjEyIDU4LjAwNTQgMTUuNDIzOUM1Ny41OTQ4IDE1LjA3MTkgNTcuMDQ0OCAxNC44OTU5IDU2LjM1NTQgMTQuODk1OUM1NS43NTQxIDE0Ljg5NTkgNTUuMjcwMSAxNS4wNDk5IDU0LjkwMzQgMTUuMzU3OUM1NC41NTE0IDE1LjY2NTkgNTQuMzc1NCAxNi4xMTMyIDU0LjM3NTQgMTYuNjk5OUM1NC4zNzU0IDE3LjExMDUgNTQuNTA3NCAxNy40NTUyIDU0Ljc3MTQgMTcuNzMzOUM1NS4wNTAxIDE3Ljk5NzkgNTUuMzg3NCAxOC4yMTc5IDU1Ljc4MzQgMTguMzkzOUM1Ni4xOTQxIDE4LjU1NTIgNTYuNzY2MSAxOC43NDU5IDU3LjQ5OTQgMTguOTY1OUM1OC40OTY4IDE5LjI1OTIgNTkuMzEwOCAxOS41NTI1IDU5Ljk0MTQgMTkuODQ1OUM2MC41NzIxIDIwLjEzOTIgNjEuMTE0OCAyMC41NzkyIDYxLjU2OTQgMjEuMTY1OUM2Mi4wMjQxIDIxLjc1MjUgNjIuMjUxNCAyMi41MjI1IDYyLjI1MTQgMjMuNDc1OUM2Mi4yNTE0IDI0LjI5NzIgNjIuMDM4OCAyNS4wNTk5IDYxLjYxMzQgMjUuNzYzOUM2MS4xODgxIDI2LjQ2NzkgNjAuNTY0OCAyNy4wMzI1IDU5Ljc0MzQgMjcuNDU3OUM1OC45MjIxIDI3Ljg2ODUgNTcuOTQ2OCAyOC4wNzM5IDU2LjgxNzQgMjguMDczOVoiIGZpbGw9IiMyMDIxMjQiLz4KPHBhdGggZD0iTS0wLjAwMDc5MzQ1NyAxOEMtMC4wMDA3OTM0NTcgMTAuNTAwNSAtMC4wMDA3OTM0NTcgNi43NTA4IDEuOTA5MDQgNC4xMjIxNUMyLjUyNTgzIDMuMjczMiAzLjI3MjQxIDIuNTI2NjMgNC4xMjEzNSAxLjkwOTgzQzYuNzUwMDEgMCAxMC40OTk3IDAgMTcuOTk5MiAwSDIxLjk5OTJDMjkuNDk4NyAwIDMzLjI0ODQgMCAzNS44NzcxIDEuOTA5ODNDMzYuNzI2IDIuNTI2NjMgMzcuNDcyNiAzLjI3MzIgMzguMDg5NCA0LjEyMjE1QzM5Ljk5OTIgNi43NTA4IDM5Ljk5OTIgMTAuNTAwNSAzOS45OTkyIDE4VjIyQzM5Ljk5OTIgMjkuNDk5NSAzOS45OTkyIDMzLjI0OTIgMzguMDg5NCAzNS44Nzc5QzM3LjQ3MjYgMzYuNzI2OCAzNi43MjYgMzcuNDczNCAzNS44NzcxIDM4LjA5MDJDMzMuMjQ4NCA0MCAyOS40OTg3IDQwIDIxLjk5OTIgNDBIMTcuOTk5MkMxMC40OTk3IDQwIDYuNzUwMDEgNDAgNC4xMjEzNSAzOC4wOTAyQzMuMjcyNDEgMzcuNDczNCAyLjUyNTgzIDM2LjcyNjggMS45MDkwNCAzNS44Nzc5Qy0wLjAwMDc5MzQ1NyAzMy4yNDkyIC0wLjAwMDc5MzQ1NyAyOS40OTk1IC0wLjAwMDc5MzQ1NyAyMlYxOFoiIGZpbGw9IiNFOTQ1NUIiLz4KPG1hc2sgaWQ9Im1hc2swXzIzMDlfNjg5IiBzdHlsZT0ibWFzay10eXBlOmFscGhhIiBtYXNrVW5pdHM9InVzZXJTcGFjZU9uVXNlIiB4PSItMSIgeT0iMCIgd2lkdGg9IjQxIiBoZWlnaHQ9IjQwIj4KPHBhdGggZD0iTS0wLjAwMDc5MzQ1NyAxOEMtMC4wMDA3OTM0NTcgMTAuNTAwNSAtMC4wMDA3OTM0NTcgNi43NTA4IDEuOTA5MDQgNC4xMjIxNUMyLjUyNTgzIDMuMjczMiAzLjI3MjQxIDIuNTI2NjMgNC4xMjEzNSAxLjkwOTgzQzYuNzUwMDEgMCAxMC40OTk3IDAgMTcuOTk5MiAwSDIxLjk5OTJDMjkuNDk4NyAwIDMzLjI0ODQgMCAzNS44NzcxIDEuOTA5ODNDMzYuNzI2IDIuNTI2NjMgMzcuNDcyNiAzLjI3MzIgMzguMDg5NCA0LjEyMjE1QzM5Ljk5OTIgNi43NTA4IDM5Ljk5OTIgMTAuNTAwNSAzOS45OTkyIDE4VjIyQzM5Ljk5OTIgMjkuNDk5NSAzOS45OTkyIDMzLjI0OTIgMzguMDg5NCAzNS44Nzc5QzM3LjQ3MjYgMzYuNzI2OCAzNi43MjYgMzcuNDczNCAzNS44NzcxIDM4LjA5MDJDMzMuMjQ4NCA0MCAyOS40OTg3IDQwIDIxLjk5OTIgNDBIMTcuOTk5MkMxMC40OTk3IDQwIDYuNzUwMDEgNDAgNC4xMjEzNSAzOC4wOTAyQzMuMjcyNDEgMzcuNDczNCAyLjUyNTgzIDM2LjcyNjggMS45MDkwNCAzNS44Nzc5Qy0wLjAwMDc5MzQ1NyAzMy4yNDkyIC0wLjAwMDc5MzQ1NyAyOS40OTk1IC0wLjAwMDc5MzQ1NyAyMlYxOFoiIGZpbGw9IiM5MDkwOTAiLz4KPC9tYXNrPgo8ZyBtYXNrPSJ1cmwoI21hc2swXzIzMDlfNjg5KSI+CjxwYXRoIGQ9Ik0wLjI4NDY2OCAzNC41NzEyVjQwLjQ1NDdIMzkuOTk5VjIuODU2OTNMMC4yODQ2NjggMzQuNTcxMloiIGZpbGw9IiNERjFBMzUiIGZpbGwtb3BhY2l0eT0iMC43NSIvPgo8L2c+CjxwYXRoIGQ9Ik03Ljk5OTY5IDI4LjM3MjhMMjUuNTk0OSAxNC4zMTAxQzI5LjAzMyAxNi4xNDk2IDMxLjgwNDMgMTguNzI4IDMxLjk1NjMgMjMuMzE4M0MzMi4zNzAyIDM1Ljc3NCAxMy40OTA1IDM3LjQyNDQgNy45OTk2OSAyOC4zNzI4WiIgZmlsbD0iI0Y1RjVGNSIvPgo8cGF0aCBkPSJNMzAuNTY3NyAxMC4zMzY5QzI0LjYyMDggMS45ODE2IDcuNjUzNDQgNC43MjM0MyA4LjAwODIzIDE1LjMwNTJDOC4xNDMzNCAxOS40MDQxIDEwLjM3MDUgMjIuODU3MiAxMy4yNjY1IDI0LjE5MDVMMzAuNTY3NyAxMC4zMzY5WiIgZmlsbD0id2hpdGUiLz4KPHBhdGggZD0iTTI1LjYwMDQgMTQuMzEwMUwxMy4yMzQ4IDI0LjE5MzVMMjkuODI0NiAxNy41NTk0QzI4Ljc0MTQgMTYuMTE1MiAyNi41MDMgMTQuNzYxNCAyNS42MDA0IDE0LjMxMDFaIiBmaWxsPSIjRkJEQkRGIi8+Cjwvc3ZnPgo=";
@@ -3455,7 +4539,16 @@
       if (link) link.href = `https://youtu.be/${VIDEO_ID}`;
       if (thumb) {
         thumb.src = `https://img.youtube.com/vi/${VIDEO_ID}/sddefault.jpg`;
-        thumb.onerror = function () { this.onerror = null; this.src = `https://img.youtube.com/vi/${VIDEO_ID}/hqdefault.jpg`; };
+        /* Dos intentos y, si tampoco, se dice. Antes el segundo fallo dejaba
+           una caja gris vacía sin ninguna explicación. */
+        thumb.onerror = function () {
+          this.onerror = function () {
+            const host = this.closest('.video-thumb-block') || this.parentElement;
+            if (host) host.innerHTML =
+              '<div class="no-data">No se ha podido cargar la miniatura del vídeo.<br>El enlace sigue funcionando.</div>';
+          };
+          this.src = `https://img.youtube.com/vi/${VIDEO_ID}/hqdefault.jpg`;
+        };
       }
     })();
 
@@ -3504,9 +4597,18 @@
     let allRows = [], allHeaders = [], charts = {}, COL = {};
 
     // ── PALETTES (Samplia brand red focused) ──
-    const BRAND_PALETTE = ['#E0253F', '#E9455B', '#FBDBDF', '#B51A03', '#0F1729', '#0F1729', '#f2f2f2', '#ffffff'];
-    const VARIETY_COLORS = ['#E0253F', '#0F1729', '#E9455B', '#FBDBDF', '#B51A03', '#0F1729', '#f2f2f2', '#e9e9e9', '#E0253F', '#E9455B', '#0F1729', '#ffffff'];
-    const RBG_PALETTE = ['#E0253F', '#0F1729', '#0F1729', '#B51A03', '#E9455B', '#59606F', '#FBDBDF', '#0F1729', '#CBCFD5', '#f2f2f2', '#e9e9e9', '#0F1729'];
+    /* Paletas categoricas. Regla del sistema: un solo acento. El rojo se
+       queda para la categoria que encabeza y a partir de ahi la serie baja
+       por la rampa azul, que se lee como una escala en vez de como un
+       semaforo. Antes habia tres o cuatro rojos repartidos por la misma
+       serie -y blancos y grises casi identicos al fondo, que en un donut de
+       ocho porciones desaparecian-, asi que el ojo no sabia cual era la
+       porcion importante. */
+    const BRAND_PALETTE = ['#E0253F', '#23355F', '#375395', '#5B72A8', '#8798BF', '#B3BED7', '#0F1729', '#D3D9E8'];
+    const VARIETY_COLORS = ['#E0253F', '#23355F', '#375395', '#5B72A8', '#8798BF', '#B3BED7',
+      '#0F1729', '#293E6F', '#314A85', '#9DABCB', '#D3D9E8', '#6C7280'];
+    const RBG_PALETTE = ['#E0253F', '#23355F', '#375395', '#5B72A8', '#8798BF', '#B3BED7',
+      '#0F1729', '#293E6F', '#314A85', '#9DABCB', '#D3D9E8', '#6C7280'];
     const MEDAL_COLORS = ['#D4AF37', '#A8A9AD', '#CD7F32'];
     // Gris neutro para lo que no es respuesta de producto ("Otro", no-consumo). Se declara
     // aquí porque QUESTIONS lo usa más abajo y una const posterior daría error de TDZ.
@@ -3516,18 +4618,16 @@
     const QUESTIONS = [
       // ── PERFIL Y NOTORIEDAD PREVIA ──
       {
-        // Tarjeta de edad emparejada con la de notoriedad previa (lado a lado). Las píldoras
-        // de género y de edad media / moda se inyectan en su cabecera.
         col: null, title: 'Distribución por rango de edad',
         sub: 'Distribución por rango de edad',
-        type: 'edad_slot', section: 'producto', pairStart: true
+        type: 'edad_slot', section: 'producto'
       },
       {
         // Notoriedad previa. Rojo para quien descubre el snack en la activación: es la
         // aportación directa del sampling. Alimenta el filtro lateral "Conocimiento previo".
         col: COL_CONOC, title: 'Notoriedad previa del snack',
         sub: 'Antes de Samplia, ¿conocías el snack Platanitos Amazonia que has probado?',
-        type: 'hbar', section: 'producto', blueGradient: true, pairEnd: true,
+        type: 'hbar', section: 'producto', blueGradient: true, pairWithNext: true, fillHeight: true,
         colorMap: {
           'No los conocía': '#E0253F', 'No lo conocía': '#E0253F', 'No la conocía': '#E0253F',
           'No, no los conocía': '#E0253F', 'No, los acabo de conocer': '#E0253F',
@@ -3540,13 +4640,13 @@
         // Multirrespuesta: puntos de contacto por los que ya se conocía el producto.
         col: COL_DONDE_CONOC, title: 'Dónde conocieron el snack',
         sub: '¿Dónde los conociste?',
-        type: 'hbar', section: 'conocimiento', multi: true, blueGradient: true, pairStart: true
+        type: 'hbar', section: 'producto', multi: true, blueGradient: true
       },
       {
         // Escala de frecuencia: gris neutro para el no consumo, degradado azul para el resto.
         col: COL_FREQ_SNACK, title: 'Frecuencia de consumo de snacks',
         sub: '¿Con qué frecuencia consumes snacks de este tipo?',
-        type: 'hbar', section: 'conocimiento', blueGradient: true, pairEnd: true,
+        type: 'hbar', section: 'conocimiento', blueGradient: true,
         colorMap: {
           'Nunca': NEUTRAL_GREY, 'No los consumo': NEUTRAL_GREY,
           'Nunca los consumo': NEUTRAL_GREY, 'Es la primera vez': '#E0253F'
@@ -3567,7 +4667,7 @@
         // dos extremos, para que "demasiado" y "poco" no se lean como mejores/peores por color.
         col: COL_EQUILIBRIO, title: 'Equilibrio plátano · lima-limón',
         sub: '¿Qué te ha parecido el equilibrio entre el sabor del plátano y el toque de lima-limón?',
-        type: 'hbar', section: 'valoracion', pairStart: true,
+        type: 'hbar', section: 'valoracion', pairWithNext: true,
         // Escala divergente explícita: el punto óptimo en el tono más oscuro y los dos
         // extremos aclarándose. Las entradas negativas van declaradas aparte porque
         // mapColor resuelve por coincidencia parcial y «Nada equilibrado» heredaría el
@@ -3589,7 +4689,7 @@
       {
         col: COL_INTENSIDAD, title: 'Intensidad del toque de lima-limón',
         sub: '¿Cómo valoras la intensidad del toque de lima-limón?',
-        type: 'hbar', section: 'valoracion', pairEnd: true,
+        type: 'hbar', section: 'valoracion',
         fixedOrder: ['Demasiado intenso para mi gusto',
           'Justo en su punto, aporta frescura sin tapar el sabor del plátano',
           'Demasiado suave, apenas se nota'],
@@ -3673,7 +4773,11 @@
       const [sR, sG, sB] = hexToRgb(base); const [eR, eG, eB] = hexToRgb(pale);
       return Array.from({ length: n }, (_, i) => { const t = n > 1 ? i / (n - 1) : 0; return `rgb(${Math.round(sR + (eR - sR) * t)},${Math.round(sG + (eG - sG) * t)},${Math.round(sB + (eB - sB) * t)})`; });
     }
-    function blueShades(n) { const sR = 15, sG = 23, sB = 41, eR = 111, eG = 135, eB = 194; return Array.from({ length: n }, (_, i) => { const t = n > 1 ? i / (n - 1) : 0; return `rgb(${Math.round(sR + (eR - sR) * t)},${Math.round(sG + (eG - sG) * t)},${Math.round(sB + (eB - sB) * t)})`; }); }
+    /* De #23355F (blue-900) a #C4CCDF (blue-100): los dos extremos de la
+       rampa azul del sistema, asi que casa con las barras y con la leyenda.
+       Arrancaba en la tinta #0F1729, que a valores altos se leia como negro
+       y no como «mucho azul». */
+    function blueShades(n) { const sR = 35, sG = 53, sB = 95, eR = 196, eG = 204, eB = 223; return Array.from({ length: n }, (_, i) => { const t = n > 1 ? i / (n - 1) : 0; return `rgb(${Math.round(sR + (eR - sR) * t)},${Math.round(sG + (eG - sG) * t)},${Math.round(sB + (eB - sB) * t)})`; }); }
     // ¿El color de fondo es lo bastante claro como para necesitar texto oscuro encima?
     // Acepta hex (#abc / #aabbcc) y `rgb()/rgba()`, que es lo que devuelven los degradados.
     function isLightColor(col) {
@@ -3851,11 +4955,13 @@
 
     // ── CHART COLOR HELPER ──
     function getChartColors() {
-      return { tickColor: '#0F1729', gridColor: 'rgba(0,0,0,.04)', borderColor: '#FFFFFF' };
+      // rejilla mas tenue y ticks en el gris de texto secundario: el dato
+      // manda, la referencia acompana
+      return { tickColor: '#6C7280', gridColor: 'rgba(15,23,41,.045)', borderColor: '#FFFFFF' };
     }
     function chartDefaults() {
       const c = getChartColors();
-      return { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { backgroundColor: '#0F1729', titleFont: { family: "'Roboto',sans-serif", weight: 600, size: 11 }, bodyFont: { family: "'Roboto',sans-serif", size: 11 }, padding: 10, cornerRadius: 8, displayColors: false, callbacks: { label: (ctx) => { const ds = (ctx.dataset && ctx.dataset.data) || []; const tot = ds.reduce((a, b) => a + (Number(b) || 0), 0); let v = ctx.parsed; if (v && typeof v === 'object') { v = (ctx.chart.options.indexAxis === 'y' && v.x != null) ? v.x : (v.y != null ? v.y : v.x); } v = Number(v) || 0; return tot > 0 ? Math.round(v / tot * 100) + '%' : ''; } } } } };
+      return { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { backgroundColor: '#0F1729', titleFont: { weight: 600, size: 11 }, bodyFont: { size: 11 }, padding: 10, cornerRadius: 8, displayColors: false, callbacks: { label: (ctx) => { const ds = (ctx.dataset && ctx.dataset.data) || []; const tot = ds.reduce((a, b) => a + (Number(b) || 0), 0); let v = ctx.parsed; if (v && typeof v === 'object') { v = (ctx.chart.options.indexAxis === 'y' && v.x != null) ? v.x : (v.y != null ? v.y : v.x); } v = Number(v) || 0; return tot > 0 ? Math.round(v / tot * 100) + '%' : ''; } } } } };
     }
 
     // ── BAR CHART ──
@@ -3873,14 +4979,14 @@
           // Barras negativas (horizontales hacia la izquierda): el plugin de datalabels interpreta
           // 'end' geométricamente (hacia la derecha), así que la etiqueta caería fuera del canvas
           // pasado el cero. Se ancla a la punta izquierda para que quede delante de la barra.
-          ...CD, indexAxis: horiz ? 'y' : 'x', plugins: { ...CD.plugins, datalabels: showDL ? { anchor: (negative && horiz) ? 'start' : 'end', align: (negative && horiz) ? 'start' : (negative ? 'bottom' : (horiz ? 'end' : 'top')), formatter: v => total > 0 ? Math.round(Math.abs(v) / total * 100) + '%' : '', font: { family: "'Roboto',sans-serif", weight: 600, size: fs }, color: '#0F1729', clip: false } : { display: false } },
+          ...CD, indexAxis: horiz ? 'y' : 'x', plugins: { ...CD.plugins, datalabels: showDL ? { anchor: (negative && horiz) ? 'start' : 'end', align: (negative && horiz) ? 'start' : (negative ? 'bottom' : (horiz ? 'end' : 'top')), formatter: v => total > 0 ? Math.round(Math.abs(v) / total * 100) + '%' : '', font: { weight: 600, size: fs }, color: '#0F1729', clip: false } : { display: false } },
           layout: { padding: { top: (!horiz && !negative) ? 18 : 0, bottom: (!horiz && negative) ? 20 : 0, right: horiz ? (negative ? 4 : 48) : 0, left: horiz ? (negative ? 52 : 2) : 0 } },
           scales: {
-            x: { display: !hideX, grid: { display: horiz && !hideX, color: c.gridColor }, ticks: { display: !hideX, font: { family: "'Roboto',sans-serif", size: fs }, color: c.tickColor }, grace: horiz ? '12%' : 0 },
+            x: { display: !hideX, grid: { display: horiz && !hideX, color: c.gridColor }, ticks: { display: !hideX, font: { size: fs }, color: c.tickColor }, grace: horiz ? '12%' : 0 },
             // autoSkip:false en barras horizontales: ahí la Y es el eje de categorías y Chart.js
             // se saltaba etiquetas cuando el texto ocupa dos o tres líneas, dejando barras sin
             // identificar. En barras verticales se mantiene el autoSkip por defecto.
-            y: { display: !hideY, grid: { color: c.gridColor, display: !horiz }, ticks: { autoSkip: !horiz, font: { family: "'Roboto',sans-serif", size: fs }, color: c.tickColor }, grace: !horiz ? '14%' : 0 }
+            y: { display: !hideY, grid: { color: c.gridColor, display: !horiz }, ticks: { autoSkip: !horiz, font: { size: fs }, color: c.tickColor }, grace: !horiz ? '14%' : 0 }
           }
         },
         plugins: [ChartDataLabels]
@@ -3897,7 +5003,7 @@
       charts[id] = new Chart(ctx.getContext('2d'), {
         type: 'doughnut',
         data: { labels: labels.map(l => wrapLabel(String(l), 22)), datasets: [{ data, backgroundColor: colors, borderWidth: 3, borderColor: c.borderColor, hoverBorderColor: c.borderColor }] },
-        options: { ...CD, plugins: { ...CD.plugins, legend: { display: true, position: 'bottom', labels: { usePointStyle: true, pointStyle: 'circle', font: { family: "'Roboto',sans-serif", size: fs }, color: c.tickColor, padding: 12 } }, datalabels: { display: true, formatter: (v) => { const n = Number(v) || 0; if (total <= 0 || n <= 0) return ''; return `${pct(n, total)}%`; }, font: { family: "'Roboto',sans-serif", weight: 700, size: fs }, color: '#ffffff' } } },
+        options: { ...CD, plugins: { ...CD.plugins, legend: { display: true, position: 'bottom', labels: { usePointStyle: true, pointStyle: 'circle', font: { size: fs }, color: c.tickColor, padding: 12 } }, datalabels: { display: true, formatter: (v) => { const n = Number(v) || 0; if (total <= 0 || n <= 0) return ''; return `${pct(n, total)}%`; }, font: { weight: 700, size: fs }, color: '#ffffff' } } },
         plugins: [ChartDataLabels]
       });
     }
@@ -3941,7 +5047,7 @@
             datalabels: {
               display: function (ctx) { const v = Number(ctx.dataset.data[ctx.dataIndex]) || 0; return total > 0 && (v / total) >= 0.05; },
               formatter: function (v) { const n = Number(v) || 0; if (total <= 0 || n <= 0) return ''; return Math.round(n / total * 100) + '%'; },
-              font: { family: "'Roboto',sans-serif", weight: 700, size: 12 },
+              font: { weight: 700, size: 12 },
               // Texto oscuro sobre segmentos claros: se calcula la luminancia porque los
               // degradados llegan como `rgb(...)` y una lista fija de hex no los cubriría.
               color: function (ctx) { return isLightColor(ctx.dataset.backgroundColor) ? '#0F1729' : '#ffffff'; },
@@ -4024,19 +5130,19 @@
             x: {
               type: 'linear', min: -0.6, max: freqs.length - 0.4, offset: false,
               grid: { color: c.gridColor },
-              ticks: { stepSize: 1, autoSkip: false, maxRotation: 0, font: { family: "'Roboto',sans-serif", size: fs, weight: 600 }, color: c.tickColor, callback: v => (Number.isInteger(v) && freqs[v]) ? wrapLabel(freqs[v], 12) : '' }
+              ticks: { stepSize: 1, autoSkip: false, maxRotation: 0, font: { size: fs, weight: 600 }, color: c.tickColor, callback: v => (Number.isInteger(v) && freqs[v]) ? wrapLabel(freqs[v], 12) : '' }
             },
             y: {
               type: 'linear', reverse: true, min: -0.6, max: drivers.length - 0.4,
               grid: { color: c.gridColor },
-              ticks: { stepSize: 1, autoSkip: false, font: { family: "'Roboto',sans-serif", size: fs, weight: 600 }, color: c.tickColor, callback: v => (Number.isInteger(v) && drivers[v]) ? wrapLabel(drivers[v], 16) : '' }
+              ticks: { stepSize: 1, autoSkip: false, font: { size: fs, weight: 600 }, color: c.tickColor, callback: v => (Number.isInteger(v) && drivers[v]) ? wrapLabel(drivers[v], 16) : '' }
             }
           },
           plugins: {
             legend: { display: false },
             tooltip: {
               backgroundColor: '#0F1729', padding: 10, cornerRadius: 8, displayColors: false,
-              titleFont: { family: "'Roboto',sans-serif", weight: 600, size: 11 }, bodyFont: { family: "'Roboto',sans-serif", size: 11 },
+              titleFont: { weight: 600, size: 11 }, bodyFont: { size: 11 },
               callbacks: {
                 title: items => items[0].raw._d,
                 label: item => { const p = item.raw; return [`Frecuencia: ${p._f}`, `${Math.round(p._p * 100)}% de este grupo (${p._c} pers.)`]; }
@@ -4045,7 +5151,7 @@
             datalabels: {
               display: ctx => { const p = ctx.dataset.data[ctx.dataIndex]; return p && p._p >= 0.12; },
               formatter: p => Math.round(p._p * 100) + '%',
-              font: { family: "'Roboto',sans-serif", weight: 700, size: fs }, color: '#ffffff'
+              font: { weight: 700, size: fs }, color: '#ffffff'
             }
           }
         },
@@ -4449,7 +5555,7 @@
             {
               type: 'bar', data: dataPct, backgroundColor: barColors, borderRadius: 5, borderSkipped: false,
               yAxisID: 'y', order: 2,
-              datalabels: { anchor: 'end', align: 'top', clip: false, formatter: v => v + '%', font: { family: "'Roboto',sans-serif", weight: 600, size: fs }, color: '#0F1729' }
+              datalabels: { anchor: 'end', align: 'top', clip: false, formatter: v => v + '%', font: { weight: 600, size: fs }, color: '#0F1729' }
             },
             {
               // Curva acumulada en rojo: con las barras en azul, un trazo azul se perdería
@@ -4465,8 +5571,8 @@
           plugins: {
             legend: { display: false },
             tooltip: {
-              backgroundColor: '#0F1729', titleFont: { family: "'Roboto',sans-serif", weight: 600, size: 11 },
-              bodyFont: { family: "'Roboto',sans-serif", size: 11 }, padding: 10, cornerRadius: 8, displayColors: false,
+              backgroundColor: '#0F1729', titleFont: { weight: 600, size: 11 },
+              bodyFont: { size: 11 }, padding: 10, cornerRadius: 8, displayColors: false,
               callbacks: {
                 label: ctx => {
                   const v = Math.round(Number(ctx.parsed.y) || 0);
@@ -4477,7 +5583,7 @@
           },
           layout: { padding: { top: 18 } },
           scales: {
-            x: { grid: { display: false }, ticks: { font: { family: "'Roboto',sans-serif", size: fs }, color: c.tickColor } },
+            x: { grid: { display: false }, ticks: { font: { size: fs }, color: c.tickColor } },
             y: { display: false, beginAtZero: true, grace: '18%' },
             y1: { display: false, position: 'right', min: 0, max: 100 }
           }
@@ -4519,7 +5625,7 @@
           <div style="position:absolute;left:0;top:0;bottom:0;width:5px;background:${color};"></div>
           <div style="font-size:11px;font-weight:700;color:var(--txt-2);margin-bottom:10px;line-height:1.25;height:28px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">${label}</div>
           <div style="display:flex;align-items:baseline;gap:8px;margin-top:auto;">
-            <span style="font-size:34px;font-weight:800;line-height:1;color:${color};font-family:'Roboto',sans-serif;">${p}%</span>
+            <span style="font-size:34px;font-weight:800;line-height:1;color:${color};font-family:'Manrope', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;">${p}%</span>
           </div>
           <div style="margin-top:10px;height:6px;border-radius:999px;background:var(--border-md);overflow:hidden;">
             <div style="height:100%;width:${p}%;background:${color};border-radius:999px;"></div>
@@ -5303,12 +6409,9 @@
         intencion: document.getElementById('dynChartsIntencion'),
       };
       Object.values(sectionContainers).forEach(c => { if (c) c.innerHTML = ''; });
-      let pairRow = null;
-      let pairContainer = null;
       function cardHTML(q, chartId) {
         const headerHTML = `<div class="card-header"><div class="card-label">Pregunta</div><h3 class="card-question">${q.sub || q.title || ''}</h3></div>`;
-        if (q.type === 'gauge_group' && !q.pairEnd) return `<div id="${chartId}"></div>`;
-        if (q.type === 'gauge_group' && q.pairEnd) return `<div class="card"><div class="card-inner"><div id="${chartId}"></div></div></div>`;
+        if (q.type === 'gauge_group') return `<div id="${chartId}"></div>`;
         if (q.type === 'consumo_selector') {
           const btnHTML = q.products.map((p, i) => `<button class="btn-selector ${i === 0 ? 'active' : ''}" data-chart="${chartId}" data-idx="${i}" onclick="switchConsumoChart('${chartId}', ${i})" style="padding:4px 12px; border-radius:14px; border:none; background:${i === 0 ? 'var(--bg-input)' : 'transparent'}; color:${i === 0 ? 'var(--txt-1)' : 'var(--txt-3)'}; cursor:pointer; font-weight:600; font-size:10.5px; transition:all 0.2s; white-space:nowrap;">${p.name}</button>`).join('');
           const headerHTMLFlex = `<div class="card-header" style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:20px; gap:16px;">
@@ -5386,6 +6489,8 @@
             </div>
             <div class="chart-wrap" style="flex:1 1 auto;min-width:0;min-height:220px;"><canvas id="chartEdad"></canvas></div>
           </div></div>`;
+        if (q.fillHeight)
+          return `<div class="card" style="display:flex;flex-direction:column;height:100%;"><div class="card-inner" style="display:flex;flex-direction:column;flex:1;min-height:0;">${headerHTML}<div class="chart-wrap" style="flex:1;min-height:0;"><canvas id="${chartId}"></canvas></div></div></div>`;
         const hClass = q.type === 'doughnut' ? 'h240' : (q.type === 'stackedbar' ? 'h100' : 'h260');
         return `<div class="card"><div class="card-inner">${headerHTML}<div class="chart-wrap ${hClass}"><canvas id="${chartId}"></canvas></div></div></div>`;
       }
@@ -5399,23 +6504,18 @@
           if (slot) slot.innerHTML = cardHTML(q, chartId);
           continue;
         }
-        if (q.pairStart) {
-          pairRow = document.createElement('div'); pairRow.className = 'row-gap pair-row';
-          // Reparto de columnas opcional (p. ej. '1.6fr 1fr' para dar más ancho al primero).
-          if (q.pairCols) pairRow.style.setProperty('--pair-cols', q.pairCols);
-          pairContainer = targetContainer;
-          pairRow.innerHTML = cardHTML(q, chartId); continue;
+        if (q.pairWithNext) {
+          const q2 = QUESTIONS[i + 1];
+          const chartId2 = 'dynChart_' + (i + 1);
+          const wrapper = document.createElement('div'); wrapper.className = 'row-gap pair-grid';
+          wrapper.innerHTML = cardHTML(q, chartId) + cardHTML(q2, chartId2);
+          targetContainer.appendChild(wrapper);
+          i++;
+          continue;
         }
-        if (q.pairEnd && pairRow) {
-          pairRow.innerHTML += cardHTML(q, chartId);
-          (pairContainer || targetContainer).appendChild(pairRow);
-          pairRow = null; pairContainer = null; continue;
-        }
-        if (pairRow) { (pairContainer || targetContainer).appendChild(pairRow); pairRow = null; pairContainer = null; }
         const wrapper = document.createElement('div'); wrapper.className = 'row-gap';
         wrapper.innerHTML = cardHTML(q, chartId); targetContainer.appendChild(wrapper);
       }
-      if (pairRow && pairContainer) pairContainer.appendChild(pairRow);
     }
 
     // ── RENDER CHARTS ──
@@ -5502,15 +6602,12 @@
           const total = q.multi ? rows.filter(r => (r[idx] || '').toString().trim()).length : arr.length;
           const el0 = document.getElementById(chartId);
           if (!entries.length) { if (el0) el0.parentElement.innerHTML = '<div class="no-data">Sin datos disponibles</div>'; return; }
-          const hpx = q.tallBars ? entries.length * 65 + 24 : Math.min(Math.max(entries.length * 32 + 20, 140), 420);
+          const baseHpx = q.tallBars ? entries.length * 65 + 24 : Math.min(Math.max(entries.length * 32 + 20, 140), 420);
+          const hpx = baseHpx;
           const canvas = document.getElementById(chartId);
-          if (canvas) {
+          if (canvas && !q.fillHeight) {
             const wrap = canvas.parentElement;
-            // En una fila emparejada la altura la marca la tarjeta más alta: se fija min-height
-            // para que la gráfica más corta crezca (flex) hasta igualar a su compañera, en vez
-            // de quedarse con un hueco en blanco debajo.
-            if (q.pairStart || q.pairEnd) { wrap.style.height = ''; wrap.style.minHeight = hpx + 'px'; }
-            else wrap.style.height = hpx + 'px';
+            wrap.style.height = hpx + 'px';
           }
           const labels = entries.map(e => e[0]);
           const data = entries.map(e => e[1]);
@@ -5710,7 +6807,7 @@
           <div style="position:relative;height:118px;">
             <canvas id="${cid}_g${i}"></canvas>
             <div style="position:absolute;left:0;right:0;bottom:14px;display:flex;flex-direction:column;align-items:center;line-height:1;">
-              <span style="font-family:'Space Grotesk','Roboto',sans-serif;font-size:26px;font-weight:800;color:var(--accent-100);" id="${cid}_gv${i}">—</span>
+              <span style="font-family:'Manrope', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;font-size:26px;font-weight:800;color:var(--accent-100);" id="${cid}_gv${i}">—</span>
             </div>
           </div>
           <div style="font-size:12px;font-weight:600;color:var(--txt-1);margin-top:4px;">${item.g.title}</div>
@@ -6482,7 +7579,23 @@
     const sections = ['kpis', 'demograficos', 'producto', 'conocimiento', 'valoracion', 'intencion', 'video', 'insights'];
     function updateActiveNav() {
       let current = 'kpis';
-      sections.forEach(id => { const el = document.getElementById(id); if (el && el.getBoundingClientRect().top <= 100) current = id; });
+      /* El umbral se mide desde debajo de la cabecera fija, no desde el borde
+         de la ventana: con un valor fijo de 100 px la sección no se marcaba
+         activa hasta bien entrada en pantalla y el menú iba un capítulo por
+         detrás de lo que se estaba mirando. */
+      const nav = parseInt(getComputedStyle(document.documentElement)
+        .getPropertyValue('--nav-h'), 10) || 60;
+      /* 84 px es donde aterriza una sección tras un salto del menú (su
+         `scroll-margin-top`); con un poco de holgura por encima, la sección a
+         la que se acaba de saltar queda marcada al llegar. */
+      const umbral = nav + 45;
+      sections.forEach(id => { const el = document.getElementById(id); if (el && el.getBoundingClientRect().top <= umbral) current = id; });
+      /* Al final del documento la última sección ya no puede subir hasta el
+         umbral —no queda recorrido—, así que el menú se quedaba marcando la
+         penúltima con «Insights» entero en pantalla. Tocando fondo, manda la
+         última. */
+      const fondo = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4;
+      if (fondo && sections.length) current = sections[sections.length - 1];
       navItems.forEach(item => { const href = item.getAttribute('href') || ''; item.classList.toggle('active', href === '#' + current); });
     }
     window.addEventListener('scroll', updateActiveNav, { passive: true });
@@ -6494,10 +7607,43 @@
     let rT; window.addEventListener('resize', () => { clearTimeout(rT); rT = setTimeout(() => { if (allRows.length > 0) render(getFiltered()); }, 250); });
 
     // ── PDF EXPORT ──
+    /* html2canvas y jsPDF suman ~350 KB y sólo hacen falta si alguien pulsa el
+       botón. Antes se descargaban en la cabecera en toda visita —incluidas las
+       muchas en las que nadie exporta nada—, así que ahora se piden aquí, la
+       primera vez que se pulsa. La promesa se guarda: a la segunda pulsación
+       ya están y no se vuelven a pedir. */
+    let pdfLibs = null;
+    function loadPdfLibs() {
+      if (pdfLibs) return pdfLibs;
+      const add = src => new Promise((ok, no) => {
+        const s = document.createElement('script');
+        s.src = src;
+        s.onload = ok;
+        s.onerror = () => no(new Error('No se pudo cargar ' + src));
+        document.head.appendChild(s);
+      });
+      pdfLibs = Promise.all([
+        add('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js'),
+        add('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js'),
+      ]).catch(e => { pdfLibs = null; throw e; });   // un fallo no debe dejarla cacheada
+      return pdfLibs;
+    }
+
     document.getElementById('downloadPdfBtn').addEventListener('click', async function () {
       const btn = this; const orig = btn.innerHTML;
-      btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;animation:spin 1s linear infinite"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg> Generando…';
+      const spinner = '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;animation:spin 1s linear infinite"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>';
       btn.disabled = true;
+      btn.innerHTML = spinner + ' Preparando…';
+      try {
+        await loadPdfLibs();
+      } catch (e) {
+        console.error('[PDF]', e);
+        showErrorBanner('No se han podido cargar las librerías del PDF.',
+          'Comprueba la conexión o el acceso a cdnjs.cloudflare.com e inténtalo de nuevo.');
+        btn.disabled = false; btn.innerHTML = orig;
+        return;
+      }
+      btn.innerHTML = spinner + ' Generando…';
       try {
         const { jsPDF } = window.jspdf;
         // Formato horizontal (A4 landscape): 297 x 210 mm
@@ -6626,11 +7772,36 @@
       if (event.key === 'Escape') closeMediaLightbox();
     });
 
+    /* Una imagen que no carga dejaba una caja vacía con el texto alternativo
+       suelto. `error` no burbujea, así que se escucha en fase de captura y se
+       marca el contenedor para que el CSS ponga el aviso. */
+    document.addEventListener('error', ev => {
+      const img = ev.target;
+      if (!img || img.tagName !== 'IMG') return;
+      const host = img.closest('.media-gallery-item, .video-thumb-block');
+      if (host) host.classList.add('is-missing');
+    }, true);
+
     // ── INIT ──
-    buildDynamicCharts();
-    document.getElementById('lastUpdate').textContent = 'Cargando…';
-    fetchData();
-    setInterval(fetchData, 24 * 60 * 60 * 1000);
+    /* Chart.js llega por `defer`, que se ejecuta antes de DOMContentLoaded:
+       aquí dentro la librería ya está cargada. */
+    document.addEventListener('DOMContentLoaded', () => {
+      /* Sin la biblioteca no hay informe. Antes esto reventaba en la primera
+         línea del script (`Chart.defaults…`) y la página se quedaba en blanco
+         sin decir nada: el fallo más silencioso que tenía. */
+      if (typeof Chart === 'undefined' || typeof ChartDataLabels === 'undefined') {
+        showErrorBanner('No se han podido cargar las librerías de gráficos.',
+          'Comprueba la conexión o el acceso a cdnjs.cloudflare.com y recarga la página.');
+        const lu = document.getElementById('lastUpdate');
+        if (lu) lu.textContent = 'No se pudo iniciar';
+        return;
+      }
+      applyChartDefaults();
+      buildDynamicCharts();
+      document.getElementById('lastUpdate').textContent = 'Cargando…';
+      fetchData();
+      setInterval(fetchData, 24 * 60 * 60 * 1000);
+    });
   </script>
 
   <div class="media-lightbox" id="mediaLightbox" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Imagen ampliada" onclick="if (event.target === this) closeMediaLightbox()">
